@@ -15,7 +15,11 @@ body {
     --background-white: rgb(250,249,248);
     --text-color: rgb(55, 55, 55);
     --header-color: rgb(0, 47, 77);
-    /* --header-color: #2E2E2E; */
+    --dropdown: rgb(0, 75, 122);
+    --dropdown-hover: rgb(54, 108, 190);
+    --border-black: rgba(55, 55, 55, 0.5);
+    --white-hover: rgb(238, 238, 238);
+    --btn-hover: rgba(55, 55, 55, 2.5%);
 }
 input{
     color: rgb(80, 80, 80);
@@ -97,7 +101,7 @@ header button{
 }
 .selected{
     color: var(--background-white) !important;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--background-white);
 }
 
 /* Portrait */
@@ -105,11 +109,11 @@ header button{
     padding: 0;
     margin: 0;
     position: absolute;
-    height: 30ch;
+    height: 27ch;
     width: 100vw;
     left: 0;
     top: -12rem;
-    background: rgb(0, 75, 122);
+    background: var(--dropdown);
     transition: top 1s;
 }
 #dropdown-menu.menu-open{
@@ -119,7 +123,7 @@ main.menu-open{
     top: 30ch;
 }
 ul{
-    background-color: rgb(0, 75, 122);
+    background-color: var(--dropdown);
     margin: 0;
 }
 li{
@@ -132,19 +136,18 @@ li{
     padding: 10px;
 }
 li:hover{
-    background-color: rgb(54, 108, 190);
+    background-color: var(--dropdown-hover);
 }
 
 @media only screen and (max-width: 790px){
     #portrait{display:inline !important;}
     header#landscape{display: none;}
 }
-.info{ display: none; color: red;}
+.info{ display: none;}
 /* Header End */
 
 /* Search Filters */
 .search-parameters-container{
-    border: 2px solid black;
     width: 20rem;
     margin-left: 0;
     position: sticky;
@@ -204,7 +207,7 @@ main{
     cursor: pointer;
 }
 .btn-empty:hover{
-    background-color: rgba(55, 55, 55, 2.5%);
+    background-color: var(--btn-hover);
 }
 .fa-copy{
     font-size: 0.9em;
@@ -249,7 +252,7 @@ svg.h-6.w-6{
 }
 .inp, textarea{
     background-color: var(--background-white);
-    border: 1px solid rgba(55, 55, 55, 0.5);
+    border: 1px solid var(--border-black);
     border-radius: 5px;
     padding-block: 4px;
     padding-inline: 10px;
@@ -287,7 +290,7 @@ a, a:link, a:active, a:visited{
     margin-inline-end: calc(2vw + 50px);
 }
 .card{
-    border: 1px solid black;
+    border: 1px solid var(--text-color);
     padding: .4rem;
     max-width: 400px;
     color:black;
@@ -295,7 +298,7 @@ a, a:link, a:active, a:visited{
     cursor: pointer;
 }
 .card:hover{
-    background-color: rgb(238, 238, 238);
+    background-color: var(--white-hover);
 }
 .card > .header{
     margin-bottom: .25rem;
@@ -310,7 +313,7 @@ a, a:link, a:active, a:visited{
     padding-bottom: 15px;
     padding-top: 5px;
     padding-inline: 5vw;
-    border: 1px solid black;
+    border: 1px solid var(--text-color);
     border-radius: 1px;
 }
 .releasedIcon{

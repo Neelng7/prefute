@@ -6,7 +6,7 @@ pre{
 /* Account profile */
 .account-picture{
     border-radius: 50%;
-    border: 2px solid black;
+    border: 2px solid var(--text-color);
 }
 .account-display-container .account-picture{
     width: 180px;
