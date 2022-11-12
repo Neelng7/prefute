@@ -178,6 +178,12 @@ main{
     /* .info{ display: flex } */
 }
 
+.about-content{
+    text-align: justify;
+    margin-inline: 20vw;
+    font-size: 110%;
+}
+
 /* Prediction View */
 .edit-section-field{
     margin: 0 auto;

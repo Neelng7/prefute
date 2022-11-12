@@ -34,7 +34,7 @@ auth.onAuthStateChanged(user => {
     }else{
         hideAllElements(signInContainer, "Sign In");
         if(window.location.search == "?new-rd"){
-            signinAlert.textContent = "Sign In to make a new prediction";
+            signinAlert.textContent = "Sign In to make a new prefute";
             signinMssg.classList.add("hide");
             redirect = "new-precition";
         }else if(window.location.search.includes("profile-rd")){
@@ -42,7 +42,7 @@ auth.onAuthStateChanged(user => {
             signinMssg.classList.add("hide");
             redirect = window.location.search;
         }else if(window.location.search.includes("private-rd")){
-            signinAlert.textContent = "Sign In to view a private prediction";
+            signinAlert.textContent = "Sign In to view a private prefute";
             signinMssg.classList.add("hide");
             redirect = window.location.search;
         }
@@ -270,23 +270,23 @@ function displayUserPredictions(){
                 prediction = prediction.length>80 ? prediction.slice(0,78)+"..." : prediction;
 
                 predictionIdCard.textContent = idx;
-                predictionCard.textContent = "Prediction: "+ prediction;
+                predictionCard.textContent = "Prefute: "+ prediction;
                 predictionCard.title = value.predictionData.prediction;
                 releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
                 
                 if(value.password.password != ""){
                     predictionLock.classList.add("fa-lock");
-                    predictionLock.title = "Prediction is Private";
+                    predictionLock.title = "Prefute is Private";
                 }else{
                     predictionLock.classList.add("fa-unlock");
-                    predictionLock.title = "Prediction is Public";
+                    predictionLock.title = "Prefute is Public";
                 }
                 if(Local_ReleaseDate < new Date()){
                     releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
-                    releasedIcon.title = "Prediction has been released";
+                    releasedIcon.title = "Prefute has been released";
                 }else{
                     releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
-                    releasedIcon.title = "Prediction has not been released";
+                    releasedIcon.title = "Prefute has not been released";
                 }
 
                 card.href = `${prefix}/prediction${suffix}?id=${idx}&user=${auth.currentUser.uid}`;

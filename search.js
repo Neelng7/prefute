@@ -34,7 +34,8 @@ function displayPredictions(id, uid, dbUser){
     var dbPredictionRef  = database.ref(`/users/${uid}/${id}/`);
     dbPredictionRef.once("value",(data) => {
         dbPrediction = data.val();
-        if(!dbPrediction) return;
+        // if(!dbPrediction) return;
+        console.log(uid, id, dbPrediction);
 
         const card = userCardTemplate.content.cloneNode(true).children[0];
         const predictionIdCard = card.querySelector("[data-prediction-id]");

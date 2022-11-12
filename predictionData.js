@@ -1,6 +1,6 @@
 if(window.location.search == "") window.location.href = pageBaseURL+prefix+"/404"+suffix;
 const pageTitle = document.querySelector("title");
-pageTitle.textContent = "Predictions - " + window.location.search.slice(1,);
+pageTitle.textContent = "Prefute - " + window.location.search.slice(1,);
 
 const accountPic = document.querySelector(".account-picture");
 const accountName = document.getElementById("account-name");
@@ -31,7 +31,7 @@ const URLparameters = new URLSearchParams(window.location.search);
 if(URLparameters.has('user')){
     userUID = URLparameters.get('user');
     predictionId = URLparameters.get('id');
-    pageTitle.textContent = "Predictions - " + predictionId;
+    pageTitle.textContent = "Prefute - " + predictionId;
     predictionId_h3.textContent = predictionId;
     displayUserData(userUID);
     displayPrediction(userUID);
@@ -127,7 +127,7 @@ function displayUserData(userUID){
                 var displayName = value.displayName.split(" ");
                 displayName.forEach(e => displayName_formated.push(e.slice(0,1).toUpperCase() + e.slice(1,)));
 
-                accountPic.src = pageBaseURL+"/images/userProfilePicDefault.png";
+                accountPic.src = "https://neelng7.github.io/prefute/images/userProfilePicDefault.png";
                 accountPic.src = value.photoURL;
                 accountName.textContent =  displayName_formated.join(" ").trim();
                 accountEmail.textContent = value.email;
