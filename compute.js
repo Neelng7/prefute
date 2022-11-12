@@ -16,7 +16,7 @@ var auth = firebase.auth();
 //Add/remove .html from url
 const rootURL = window.location.origin;
 const pageBaseURL = rootURL.includes("github") ? rootURL + "/prefute/" : rootURL;
-var suffix = rootURL.includes("github") ? "" : ".html";
+var suffix = rootURL.includes("55") ? ".html" : "";
 var prefix = rootURL.includes("github") ? '/prefute' : "";
 var baseElm = document.createElement("base");
 baseElm.href = pageBaseURL;
@@ -40,4 +40,24 @@ main.addEventListener('click', () => {
     dropdown_menu.classList.toggle("menu-open", false);
     main.classList.toggle("menu-open", false);
 }); 
+
+//Page Shortcuts
+document.addEventListener('keydown', keydown => {
+    if(keydown["altKey"]){
+        switch(keydown.key){
+            case "1": 
+                window.location.href = pageBaseURL+"/";
+                break;
+            case "2":
+                window.location.href = pageBaseURL+"/search"+suffix;
+                break;
+            case "3":
+                window.location.href = pageBaseURL+"/new"+suffix;
+                break;
+            case "4":
+                window.location.href = pageBaseURL+"/account"+suffix;
+                break;
+        }
+    }
+})
 

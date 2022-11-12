@@ -139,6 +139,7 @@ li:hover{
     #portrait{display:inline !important;}
     header#landscape{display: none;}
 }
+.info{ display: none; color: red;}
 /* Header End */
 
 /* Search Filters */
@@ -175,12 +176,13 @@ main{
         top: 0 !important;
         transition: none;
     }
-    /* .info{ display: flex } */
 }
 
 .about-content{
     text-align: justify;
-    margin-inline: 20vw;
+    margin: 0 auto;
+    max-width: 57.5vw;
+    /* margin-inline: calc(5vw + 10px); */
     font-size: 110%;
 }
 
