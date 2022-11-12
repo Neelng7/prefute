@@ -36,7 +36,7 @@
         <div class="page-anchors">
             <a title="About (Alt+1)" href="/">About</a>
             <a title="Search (Alt+2)" href="search.html">Search</a>
-            <a class="selected" title="New Prediction (Alt+3)" href="new.html">New Prediction</a>
+            <a class="selected" title="New Prefute (Alt+3)" href="new.html">New Prefute</a>
             <a title="My Account (Alt+4)" href="account.html">My Account</a>
             <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br>
         </div>
@@ -45,23 +45,25 @@
         <ul><br>
             <a href='/'><li>About</li></a>
             <a href="search.html"><li>Search</li></a>
-            <a href="new.html"><li>New Prediction</li></a>
+            <a href="new.html"><li>New Prefute</li></a>
             <a href="account.html"><li><i class="fa-solid fa-circle-user"></i> My Account</li></a>
             <li id="reportAnchorDropdown">Report a Problem &#x2691;</li>
         </ul>
     </div>
     
 <main><br>
-       <h1>New Prediction</h1> 
-       <p>Create a new prediction about the future and set a release date.</p>   
+       <h1>New Prefute</h1> 
+       <p>Create a new Prefute about the future and set a release date.</p>   
        <p id="alert" class="alert"></p>
     
     <div class="centre-container">
         
-        <label for="predictionID"><pre>Prediction Id:</pre></label>
-        <input class="inp" type="text" name="prediction id" id="predictionID" placeholder="prediction id" required><br>
+        <label for="predictionID"><pre>Prefute Id:</pre></label>
+        <input class="inp" type="text" name="prediction id" id="predictionID" placeholder="prediction id" required>
+        <i title="Define you prefute in one phrase" class="fa-solid fa-circle-info info"></i><br>
 
-        <label for="prediction"><pre>Prediction: </pre></label><br>
+
+        <label for="prediction"><pre>Prefute: </pre></label><br>
         <textarea name="prediction" id="prediction" cols="33" rows="4" placeholder="prediction" required></textarea><br>
 
         <label for="release-date"><pre>Release Date: </pre></label>

@@ -166,7 +166,7 @@ async function addUserInfo(userCredential){
         })
         window.location.reload();   
     }
-}
+} 
 
 //reveal password - toggle input type
 passwordReveal.forEach(icon => {

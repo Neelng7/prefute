@@ -37,7 +37,7 @@
         <div class="page-anchors">
             <a title="About (Alt+1)" href="/">About</a>
             <a class="selected" title="Search (Alt+2)" href="search.html">Search</a>
-            <a title="New Prediction (Alt+3)" href="new.html">New Prediction</a>
+            <a title="New Prefute (Alt+3)" href="new.html">New Prefute</a>
             <a title="My Account (Alt+4)" href="account.html">My Account</a>
             <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br>
         </div>
@@ -46,7 +46,7 @@
         <ul><br>
             <a href='/'><li>About</li></a>
             <a href="search.html"><li>Search</li></a>
-            <a href="new.html"><li>New Prediction</li></a>
+            <a href="new.html"><li>New Prefute</li></a>
             <a href="account.html"><li><i class="fa-solid fa-circle-user"></i> My Account</li></a>
             <li id="reportAnchorDropdown">Report a Problem &#x2691;</li>
         </ul>
@@ -55,34 +55,35 @@
 <main>
     <div class="fixed">
         <h1>Search</h1>
-        <p>Search for predictions by entering the <span class="search-type">prediction ID/ name/ email/ public tags</span></p>
+        <p>Search for Prefutes by entering the <span class="search-type">Prefute ID/ name/ email/ public tags</span></p>
         <p>Search by entering all relevant information seperated by a space</p><br>
 
-        <label for="search">Search Prediction: </label>
+        <label for="search">Search Prefute: </label>
         <input type="search" id="search" data-seach>
         <p id="searchResults"></p>
 
         <div class="search-parameters-container box-effect">
-            <h2>Search Filters</h2>
-            <div class="parameters-wrapper">
-            <div class="searchBy-filters-wrapper">Search By: <br>
+            <!-- <div class="parameters-wrapper"> -->
+            <h2>Search Filters <i id="filter-dropdown" class="fa-sharp fa-solid fa-angle-up"></i></h2>
+            <!-- </div> -->
+            <!-- <div class="searchBy-filters-wrapper">Search By: <br>
                 <label for="search-by-filter-1"><pre>Prediction ID  </pre></label>
-                <input name="search-by" type="radio" checked class="search-filter-checkbox" id="search-by-filter-1"><br>
+                <input name="search-by" type="radio" checked class="search-filter-checkbox" id="filter-id"><br>
                 <label for="search-by-filter-2"><pre>User                   </pre></label>
-                <input name="search-by" type="radio" class="search-filter-checkbox" id="search-by-filter-2"><br>
+                <input name="search-by" type="radio" class="search-filter-checkbox" id="filter-email"><br>
                 <label for="search-by-filter-3"><pre>Public Tags      </pre></label>
-                <input name="search-by" type="radio" class="search-filter-checkbox" id="search-by-filter-3"><br>
-            </div><br>
-            <div class="search-only-filters-wrapper">Only Show: <br>
-                <label for="search-only-filters-released"><pre>Released Predictions     </pre></label>
+                <input name="search-by" type="radio" class="search-filter-checkbox" id="filter-tags"><br>
+            </div><br> -->
+            <div class="search-only-filters-wrapper">
+                <b>Only Show: </b><br>
+                <label for="search-only-filters-released"><pre>Released Prefutes     </pre></label>
                 <input type="checkbox" checked class="search-only-filter" id="search-only-filters-released"><br>
-                <label for="search-only-filters-unreleased"><pre>Unreleased Predictions </pre></label>
+                <label for="search-only-filters-unreleased"><pre>Unreleased Prefutes </pre></label>
                 <input type="checkbox" checked class="search-only-filter" id="search-only-filters-unreleased"><br>
-                <label for="search-only-filters-public"><pre>Public Predictions          </pre></label>
+                <label for="search-only-filters-public"><pre>Public Prefutes          </pre></label>
                 <input type="checkbox" checked class="search-only-filter" id="search-only-filters-public"><br>
-                <label for="search-only-filters-private"><pre>Private Predictions         </pre></label>
+                <label for="search-only-filters-private"><pre>Private Prefutes         </pre></label>
                 <input type="checkbox" checked class="search-only-filter" id="search-only-filters-private"><br>
-            </div>
             </div>
         </div>
     </div>

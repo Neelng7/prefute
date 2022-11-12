@@ -220,8 +220,8 @@ dialog button{
 .search-parameters-container{
     top: 0;
     padding-inline: 5vw;
-    padding-block-end: 25px;
-    padding-block-start: 15px;
+    padding-block-end: 2px;
+    padding-block-start: 2px;
     margin-block: 20px;
 }
 .signUp-info-wrapper{
