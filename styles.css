@@ -104,6 +104,9 @@ header button{
     color: var(--background-white) !important;
     border-bottom: 1px solid var(--background-white);
 }
+#welcome-mssg{
+    font-size: 120%;
+}
 
 /* Portrait */
 #dropdown-menu{
