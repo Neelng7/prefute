@@ -54,9 +54,10 @@ header{
 header#landscape{
     align-items: center;
     display: flex;
-    gap: calc(100vw - 40em);
+    gap: calc(100vw - 34em);
 }
 header#portrait{
+    z-index: 2;
     display: none;
     text-align: left;
     gap: calc(100vw - 60em);
@@ -108,7 +109,8 @@ header button{
 #dropdown-menu{
     padding: 0;
     margin: 0;
-    position: absolute;
+    position: fixed;
+    z-index: 1;
     height: 27ch;
     width: 100vw;
     left: 0;
@@ -140,10 +142,14 @@ li:hover{
 }
 
 @media only screen and (max-width: 790px){
-    #portrait{display:inline !important;}
-    header#landscape{display: none;}
+    #portrait{ display:inline !important; }
+    header#landscape{ display: none; }
+    .info{ display: none;}
+    .fav-btn-wrapper{ 
+        display: none !important;
+        color:red 
+    }
 }
-.info{ display: none;}
 /* Header End */
 
 /* Search Filters */
@@ -327,6 +333,11 @@ a, a:link, a:active, a:visited{
 }
 /* Predictions cards end */
 
+#search{
+    background : none;
+    border: 2px solid var(--border-black);
+    border-radius: 3px;
+}
 .centre-container{
     width: fit-content;
     margin: 0 auto;

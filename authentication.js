@@ -604,6 +604,7 @@ function populateFavourites(){
             const faveUserEmail = favcard.querySelector("[data-email]");
             const faveUser_viewProfile = favcard.querySelector("[data-view-profile]");
             const removeFromFavorites = favcard.querySelector("[data-remove-profile]");
+            favcard.id = idx
 
             faveUser_viewProfile.href = pageBaseURL+`/user${suffix}?${idx}`;
             removeFromFavorites.addEventListener('click', () => {
@@ -627,7 +628,18 @@ function populateFavourites(){
                 favUserPfp.src = favouritesData.photoURL;
                 faveUserEmail.textContent = favouritesData.email;
                 favUserName.textContent = favouritesData.displayName;
-            }).then(e => favouritesCardContainer.append(favcard));
+            }).then(e => {
+                favouritesCardContainer.append(favcard);
+                const favouritesCard = document.querySelectorAll(".favourites-card");
+                favouritesCard.forEach(card => {
+                    const favBtnWrapper = card.querySelector(".fav-btn-wrapper");
+                    if(getComputedStyle(favBtnWrapper).getPropertyValue("display") == "none"){
+                        card.addEventListener('click', () =>{
+                            window.location.href = pageBaseURL+`/user${suffix}?${card.id}`;
+                        })
+                    }
+                })
+            });
         }
     })
 }
