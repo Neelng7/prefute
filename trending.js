@@ -1,14 +1,25 @@
 const userCardTemplate= document.querySelector("[data-template]");
 const predictionCardContainer= document.querySelector("[data-prediction-cards-container]");
 const searchLoad = document.getElementById("search-load");
-const noPredictionFound = document.querySelector(".no-prediction-found");
-var dbData, dbPrediction, dbUser;
+const userName = document.getElementById("user-name");
+// const noPredictionFound = document.querySelector(".no-prediction-found");
+var dbData, dbPrediction, dbUser, count = 0;
 var filterOnlyArray = ["released", "unreleased", "public", "private"];
 getData();
 
+var today = new Date();
+today.setDate(today.getDate()-1);
+
+//Welcome user name
+auth.onAuthStateChanged(user => {
+    if (user) {
+        userName.textContent = auth.currentUser.displayName;
+    }
+});
+
 function getData(){
     searchLoad.classList.toggle("hide", false);
-    noPredictionFound.classList.toggle("hide", true);
+    // noPredictionFound.classList.toggle("hide", true);
     predictionCardContainer.innerHTML = "";
     var dbDataRef  = database.ref('/data/');
     dbDataRef.once("value",(data) => {
@@ -34,7 +45,6 @@ function displayPredictions(id, uid, dbUser){
     var dbPredictionRef  = database.ref(`/users/${uid}/${id}/`);
     dbPredictionRef.once("value",(data) => {
         dbPrediction = data.val();
-        console.log(id)
         if(!dbPrediction) return;
 
         const card = userCardTemplate.content.cloneNode(true).children[0];
@@ -47,7 +57,9 @@ function displayPredictions(id, uid, dbUser){
         const publicTags = card.querySelector("[data-tags]");
 
         const Local_ReleaseDate = new Date(dbPrediction.public.releaseTimestamp);
+        const Local_UploadDate = new Date(dbPrediction.private.uploadDate);
         const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
+        if(!Local_UploadDate > today) return;
 
         predictionIdCard.textContent = id;
         releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
@@ -77,10 +89,12 @@ function displayPredictions(id, uid, dbUser){
 
         card.href = `${prefix}/prediction${suffix}?id=${id}&user=${uid}`;
         predictionCardContainer.append(card);
+        count += 1;
+
     }).then(() => {
         searchLoad.classList.toggle("hide", true);
-        if(predictionCardContainer.children.length == 0) noPredictionFound.classList.toggle("hide", false);
-        else noPredictionFound.classList.toggle("hide", true);
+        // if(predictionCardContainer.children.length == 0) noPredictionFound.classList.toggle("hide", false);
+        // else noPredictionFound.classList.toggle("hide", true);
     });
 }
 
@@ -114,53 +128,4 @@ searchByFilters.forEach(inp => {
     })
 })
 
-const searchInp = document.getElementById("search");
-searchInp.addEventListener("input", () => {
 
-    const searchValue = searchInp.value.toLowerCase();
-    var resultsCount = 0; 
-
-    const cardEls = document.querySelectorAll(".card");
-    cardEls.forEach((e) => {
-
-    const predictionid = e.querySelector(".header").textContent;
-    const name = e.querySelector(".name").textContent;
-    const email = e.querySelector(".email").textContent;
-    const tags = e.querySelector(".search-tags").textContent;
-    
-    const searchValueSplit = searchValue.split(" ");
-    
-    for(let n=0; n<searchValueSplit.length; n++){
-        if(predictionid.includes(searchValueSplit[n]) || name.includes(searchValueSplit[n])){
-            e.classList.remove("hide")
-        }else if(email.includes(searchValueSplit[n]) || tags.includes(searchValueSplit[n])){
-            e.classList.remove("hide")
-        }else{
-            e.classList.add("hide")
-            // break;
-        } 
-    }
-    if(!e.classList.contains("hide")) resultsCount += 1;
-    })
-    generateSearchReults(resultsCount);
-})
-
-function generateSearchReults(resultsCount){
-    searchResults.textContent = resultsCount;   
-    searchResultsPElm.classList.remove("hide");
-    noPredictionFound.classList.add("hide");
-
-    if(resultsCount == 0){
-        searchResultsPElm.classList.add("hide");
-        noPredictionFound.classList.toggle("hide", false);
-    }
-}
-
-const filterDropdown = document.getElementById("filter-dropdown");
-const searchOnlyFiltersWrapper = document.querySelector(".search-only-filters-wrapper");
-
-filterDropdown.addEventListener('click', () => {
-    filterDropdown.classList.toggle("fa-angle-down");
-    filterDropdown.classList.toggle("fa-angle-up");
-    searchOnlyFiltersWrapper.classList.toggle("hide");
-})

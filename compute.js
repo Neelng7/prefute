@@ -49,12 +49,15 @@ document.addEventListener('keydown', keydown => {
                 window.location.href = pageBaseURL+"/";
                 break;
             case "2":
-                window.location.href = pageBaseURL+"/search"+suffix;
+                window.location.href = pageBaseURL+"/about"+suffix;
                 break;
             case "3":
-                window.location.href = pageBaseURL+"/new"+suffix;
+                window.location.href = pageBaseURL+"/search"+suffix;
                 break;
             case "4":
+                window.location.href = pageBaseURL+"/new"+suffix;
+                break;
+            case "5":
                 window.location.href = pageBaseURL+"/account"+suffix;
                 break;
         }

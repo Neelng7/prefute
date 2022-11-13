@@ -33,23 +33,25 @@
         <div class="page-title">
             <a href="/"><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
             <h1 id="h1main">Prefute</h1></div>
-        <div class="page-anchors">
-            <a title="About (Alt+1)" href="/">About</a>
-            <a title="Search (Alt+2)" href="search.html">Search</a>
-            <a class="selected" title="New Prefute (Alt+3)" href="new.html">New Prefute</a>
-            <a title="My Account (Alt+4)" href="account.html">My Account</a>
-            <!-- <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br> -->
+            <div class="page-anchors">
+                <a title="Home (Alt+1)" href="/">Home</a>
+                <a title="About (Alt+2)" href="/about.html">About</a>
+                <a title="Search (Alt+3)" href="search.html">Search</a>
+                <a class="selected" title="New Prefute (Alt+4)" href="new.html">New Prefute</a>
+                <a title="My Account (Alt+5)" href="account.html">My Account</a>
+                <!-- <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br> -->
+            </div>
+        </header><br><br><br>
+        <div id="dropdown-menu">
+            <ul><br>
+                <a href='/'><li>Home</li></a>
+                <a href='/about.html'><li>Home</li></a>
+                <a href="search.html"><li>Search</li></a>
+                <a href="new.html"><li>New Prefute</li></a>
+                <a href="account.html"><li>My Account</li></a>
+                <!-- <li id="reportAnchorDropdown">Report a Problem &#x2691;</li> -->
+            </ul>
         </div>
-    </header><br><br><br>
-    <div id="dropdown-menu">
-        <ul><br>
-            <a href='/'><li>About</li></a>
-            <a href="search.html"><li>Search</li></a>
-            <a href="new.html"><li>New Prefute</li></a>
-            <a href="account.html"><li>My Account</li></a>
-            <!-- <li id="reportAnchorDropdown">Report a Problem &#x2691;</li> -->
-        </ul>
-    </div>
     
 <main><br>
        <h1>New Prefute</h1> 
@@ -59,12 +61,12 @@
     <div class="centre-container">
         
         <label for="predictionID"><pre>Prefute Id:</pre></label>
-        <input class="inp" type="text" name="prediction id" id="predictionID" placeholder="prediction id" required>
+        <input class="inp" type="text" name="prediction id" id="predictionID" placeholder="prefute id" required>
         <i title="Define you prefute in one phrase" class="fa-solid fa-circle-info info"></i><br>
 
 
         <label for="prediction"><pre>Prefute: </pre></label><br>
-        <textarea name="prediction" id="prediction" cols="33" rows="4" placeholder="prediction" required></textarea><br>
+        <textarea name="prediction" id="prediction" cols="33" rows="4" placeholder="prediction/ confession/ announcement/ etc" required></textarea><br>
 
         <label for="release-date"><pre>Release Date: </pre></label>
         <input class="inp" type="date" name="release date" id="release-date" required><br>

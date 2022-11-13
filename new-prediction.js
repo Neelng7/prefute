@@ -109,7 +109,7 @@ async function uploadData(){
     var releaseDateModified = new Date(releaseDate.value+"T"+releaseTime.value).toGMTString();
     var uploadDateModified = today.toGMTString();
 
-    database.ref("/data/").update({
+    await database.ref("/data/").update({
         [predictionID.value]: auth.currentUser.uid
     })
 

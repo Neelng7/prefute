@@ -54,7 +54,7 @@ header{
 header#landscape{
     align-items: center;
     display: flex;
-    gap: calc(100vw - 34em);
+    gap: calc(100vw - 38em);
 }
 header#portrait{
     z-index: 2;
@@ -332,6 +332,14 @@ a, a:link, a:active, a:visited{
     margin-left: 10px;
 }
 /* Predictions cards end */
+
+.text-left-align{
+    text-align: left;
+    margin-left: 20px
+}
+.home-text *{
+    font-size: 5rem;
+}
 
 #search{
     background : none;

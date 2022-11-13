@@ -11,12 +11,14 @@
     
     <link class="link" rel="icon" href="images/Logo.png" type="image/icon type">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="account.css">
     <script src="compute.js" defer></script>
-    <title>About - Prefute</title>
+    <script src="trending.js" defer></script>
+    <title>Home - Prefute</title>
 </head>
 <body>
     <header id="portrait"><br>
-        <a href=""><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
+        <a href="/"><img src="images/LogoWhite.png"></a>
         <b>Prefute</b>
         <button id="dropdown"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" role="img" 
             style="height:25px;width:25px;"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-list-ul 
@@ -30,43 +32,56 @@
     </header>
     <header id="landscape">
         <div class="page-title">
-            <a href=""><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
+            <a href="/"><img src="images/LogoWhite.png"></a>
             <h1 id="h1main">Prefute</h1></div>
         <div class="page-anchors">
-            <a class="selected" title="About (Alt+1)" href="">About</a>
-            <a title="Search (Alt+2)" href="search.html">Search</a>
-            <a title="New Prefute (Alt+3)" href="new.html">New Prefute</a>
-            <a title="My Account (Alt+4)" href="account.html">My Account</a>
+            <a class="selected" title="Home (Alt+1)" href="/">Home</a>
+            <a title="About (Alt+2)" href="/about.html">About</a>
+            <a title="Search (Alt+3)" href="search.html">Search</a>
+            <a title="New Prefute (Alt+4)" href="new.html">New Prefute</a>
+            <a title="My Account (Alt+5)" href="account.html">My Account</a>
             <!-- <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br> -->
         </div>
     </header><br><br><br>
     <div id="dropdown-menu">
         <ul><br>
-            <a href=''><li>About</li></a>
+            <a href='/'><li>Home</li></a>
+            <a href='/about.html'><li>Home</li></a>
             <a href="search.html"><li>Search</li></a>
             <a href="new.html"><li>New Prefute</li></a>
             <a href="account.html"><li>My Account</li></a>
             <!-- <li id="reportAnchorDropdown">Report a Problem &#x2691;</li> -->
         </ul>
     </div>
-
-<main id="main">
-    <br><h1>About</h1><br>
-
-    <div class="about-content">
-        Today, individuals find it difficult to share their thoughts with people, especially online. Whether it’s an 
-        announcement about their lives, a prediction which they choose to make or a confession about something, Prefute 
-        offers users a safe way to add these “prefutes” on their website, either anonymously or otherwise and gives all 
-        consumers a way to express themselves freely. The entire world revolves around the system of assumptions, big 
-        public announcements and predictions that individuals make on either a personal scale or a professional one. By
-        putting these prefutes online, we are giving our audience a chance to see what is new and happening in the world
-        and also a safe place to express what one may be going through.<br><br> Our website allows you to show the world what 
-        interests you, what makes you happy and even play an adventurous betting game with friends based on your 
-        predictions. Scrolling through our website, you will find topics that interest the general public and topics 
-        that are trending. You will further find topics which we think are of interest to you to provide you with an 
-        overall interactive and fun experience. At prefute, we aim to open the floodgates to the world. Our mission is
-        to provide a safe and secure environment for users to express themselves openly and make friends along the way.
+    
+<main>
+    <h1>Home</h1>
+    <div class="home-texts">
+        <p>Welcome <span id="user-name">Guest</span></p>
+        <p>Check whats new and trending in the world today. <br> Here are some of the top predictions made in the last 24 hours. </p>
     </div>
+    <h2 class="text-left">See Whats New!</h2>
+    <i class="fa-solid fa-circle-notch fa-spin" id="search-load"></i><br>
+    
+    <div id="prediction-wrapper">
+        <div class="prediction-cards" data-prediction-cards-container>
+        </div>
+        <div class="no-prediction-found hide">
+            <h2>No Results Found</h2>
+        </div>
+    </div>
+    <template data-template>
+    <a href="#"  class="card">
+        <i style="font-size:24px" id="predictionLock" data-lock class="fa"></i>
+        <img class="releasedIcon" data-released><br>
+        <div class="header" data-prediction-id></div>
+        <div class="name" data-user-name></div>
+        <div class="email" data-user-email></div>
+        <div class="release-date" data-release-date></div>
+        <div class="search-tags" data-tags></div>
+    </a>
+    </template>
+</div>
 </main>
 </body>
 </html>

@@ -11,15 +11,13 @@
     
     <link class="link" rel="icon" href="images/Logo.png" type="image/icon type">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="account.css">
     <script src="compute.js" defer></script>
-    <script src="userData.js" defer></script>
-    <title>Prefute</title>
+    <title>About - Prefute</title>
 </head>
 <body>
     <header id="portrait"><br>
         <a href=""><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
-        <b>Prefutes</b>
+        <b>Prefute</b>
         <button id="dropdown"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" role="img" 
             style="height:25px;width:25px;"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-list-ul 
             fa-lg"><path fill="currentColor" d="M16 96C16 69.49 37.49 48 64 48C90.51 48 112 69.49 112 96C112 122.5 90.51 144 64 144C37.49 
@@ -36,7 +34,7 @@
             <h1 id="h1main">Prefute</h1></div>
             <div class="page-anchors">
                 <a title="Home (Alt+1)" href="/">Home</a>
-                <a title="About (Alt+2)" href="/about.html">About</a>
+                <a title="About (Alt+2)" class="selected"  href="/about.html">About</a>
                 <a title="Search (Alt+3)" href="search.html">Search</a>
                 <a title="New Prefute (Alt+4)" href="new.html">New Prefute</a>
                 <a title="My Account (Alt+5)" href="account.html">My Account</a>
@@ -55,49 +53,22 @@
         </div>
 
 <main id="main">
+    <br><h1>About</h1><br>
 
-    <h1>Account</h1>
-
-    <div class="account-display-container">
-    <img class="account-picture" src="https://neelng7.github.io/prefute/images/userProfilePicDefault.png">
-    <div class="account-info-conatiner">
-        <p id="account-name">User</p>
-        <span class="prediction-count">
-            <p>Prefutes: </p>
-            <p><span id="public-predictions-count">0</span> Public</p>
-            <p><span id="private-predictions-count">0</span> Private</p>
-        </span>
-        <p id="account-email">email</p><br>
-        <button id="add-to-favorites" class="account-btn-last" disabled>Add to Favorites</button>
-        <button id="remove-from-favorites" class="account-btn-last hide" disabled>Remove from Favorites</button>
+    <div class="about-content">
+        Today, individuals find it difficult to share their thoughts with people, especially online. Whether it’s an 
+        announcement about their lives, a prediction which they choose to make or a confession about something, Prefute 
+        offers users a safe way to add these “prefutes” on their website, either anonymously or otherwise and gives all 
+        consumers a way to express themselves freely. The entire world revolves around the system of assumptions, big 
+        public announcements and predictions that individuals make on either a personal scale or a professional one. By
+        putting these prefutes online, we are giving our audience a chance to see what is new and happening in the world
+        and also a safe place to express what one may be going through.<br><br> Our website allows you to show the world what 
+        interests you, what makes you happy and even play an adventurous betting game with friends based on your 
+        predictions. Scrolling through our website, you will find topics that interest the general public and topics 
+        that are trending. You will further find topics which we think are of interest to you to provide you with an 
+        overall interactive and fun experience. At prefute, we aim to open the floodgates to the world. Our mission is
+        to provide a safe and secure environment for users to express themselves openly and make friends along the way.
     </div>
-    </div><br>
-
-    <h2>Predictions</h2>
-    <div class="line-seperator"></div>
-    <span id="load"><br><br><br>
-        <i class="fa-solid fa-circle-notch fa-spin" id="search-load"></i>
-    </span>
-    <div class="predictions-container">
-        <p id="no-predictions-account" class="hide">No Prefutes</p><br>
-        <div class="noPrediction hide">
-            <br><p>No Predictions</p><br>
-        </div>
-        <div id="prediction-wrapper">
-            <div class="prediction-cards" data-prediction-cards-container>
-            </div>
-        </div>
-        <template data-predictions-template>
-            <a href="#" class="card">
-                <i style="font-size:24px" id="predictionLock" data-lock class="fa"></i>
-                <img class="releasedIcon" data-released><br>
-                <b class="header" data-prediction-id></b><br>
-                <div data-prediction></div>
-                <div data-release-date></div>
-            </a>
-        </template>
-    </div>
-        
 </main>
 </body>
 </html>
