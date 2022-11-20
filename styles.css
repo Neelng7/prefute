@@ -315,6 +315,14 @@ a, a:link, a:active, a:visited{
 .card > *{
     margin-block: 10px;
 }
+[data-prediction]{
+    --max-lines: 3;
+    margin-inline: 10px;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-lines);
+}
 .prediction-wrapper{
     width: fit-content;
     height: fit-content;

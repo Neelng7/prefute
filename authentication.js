@@ -267,7 +267,6 @@ function displayUserPredictions(){
                 const Local_ReleaseDate = new Date(value.public.releaseTimestamp);
                 const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
                 var prediction = value.predictionData.prediction;
-                prediction = prediction.length>80 ? prediction.slice(0,78)+"..." : prediction;
 
                 predictionIdCard.textContent = idx;
                 predictionCard.textContent = "Prefute: "+ prediction;
