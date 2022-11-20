@@ -61,7 +61,6 @@ userRef.once("value", data => {
             const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
             var prediction = value.predictionData.prediction;
             prediction = prediction.length>80 ? prediction.slice(0,78)+"..." : prediction;
-            console.log(value);
 
             predictionIdCard.textContent = idx;
             predictionCard.textContent = "Prediction: "+ prediction;
@@ -70,21 +69,20 @@ userRef.once("value", data => {
                             
             if(value.password.password != ""){
                 predictionLock.classList.add("fa-lock");
-                predictionLock.title = "Prediction is Private";
+                predictionLock.title = "Prefute is Private";
             }else{
                 predictionLock.classList.add("fa-unlock");
-                predictionLock.title = "Prediction is Public";
+                predictionLock.title = "Prefute is Public";
             }
             if(Local_ReleaseDate < new Date()){
                 releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
-                releasedIcon.title = "Prediction has been released";
+                releasedIcon.title = "Prefute has been released";
             }else{
                 releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
-                releasedIcon.title = "Prediction has not been released";
+                releasedIcon.title = "Prefute has not been released";
             }
 
             card.href = `${prefix}/prediction${suffix}?id=${idx}&user=${userUID}`;
-            console.log(card, predictionCardContainer);
             predictionCardContainer.append(card);
         }
 

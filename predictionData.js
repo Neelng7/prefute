@@ -71,14 +71,14 @@ function displayPrediction(userUID){
 
         const Local_UploadDate = new Date(new Date(predictionData.private.uploadDate));
         const Local_UplaodTime = Local_UploadDate.toTimeString().split(":");
-        uploadDateSpan.textContent = `This prediction was uploaded on 
+        uploadDateSpan.textContent = `This Prefute was uploaded on 
             ${Local_UploadDate.toDateString()}, at ${Local_UplaodTime[0]}:${Local_UplaodTime[1]}`;
         
         const Local_ReleaseDate = new Date(new Date(predictionData.public.releaseTimestamp));
         const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
 
         if(Local_ReleaseDate <= new Date()){
-            releaseDateSpan.textContent = `This prediction was released on
+            releaseDateSpan.textContent = `This Prefute was released on
                 ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
 
             if(predictionData.password.password != ""){
@@ -96,7 +96,7 @@ function displayPrediction(userUID){
                 notReleasedFieldset.remove();
             }
         }else{
-            releaseDateSpan.textContent = `This prediction will be released on
+            releaseDateSpan.textContent = `This Prefute will be released on
                 ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
             releaseDateSpan.style.color = "red";
             if(isOwner){
@@ -278,28 +278,28 @@ async function uploadData(){
     if(visibility_edit.value == "Public") await database.ref(`/users/${auth.currentUser.uid}/${predictionId}/public`).update({
         tags: publicTags_edit.value
     });
-    console.log("Prediction Edited");
+    console.log("Prefute Edited");
     window.location.reload();
 }
 
 //delete Prediction
 const deletePredictionBtn = document.getElementById("delete-prediction");
 if(deletePredictionBtn) deletePredictionBtn.addEventListener('click', () => {
-    var conformation = prompt("Enter prediction Id to delete prediction");
+    var conformation = prompt("Enter Prefute Id to delete Prefute");
     if(conformation != null){
         if(conformation == predictionId){
             database.ref(`/users/${auth.currentUser.uid}/${predictionId}/public`).remove().then(() => {
                 database.ref(`/users/${auth.currentUser.uid}/${predictionId}`).remove().then(() => {
                 }).then(() => {
                         database.ref(`/data/${predictionId}`).remove().then(() => {
-                            console.log("Prediction Deleted");
-                            alert("Prediction Deleted");
+                            console.log("Prefute Deleted");
+                            alert("Prefute Deleted");
                             window.location.href = pageBaseURL+"/account"+suffix;
                     })
                 })
             })
         }else{
-            alert("Prediction Id is incorrect\nPrediction not deleted");
+            alert("Prefute Id is incorrect\nPrefute not deleted");
         }
     }
 })

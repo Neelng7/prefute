@@ -54,7 +54,7 @@ header{
 header#landscape{
     align-items: center;
     display: flex;
-    gap: calc(100vw - 38em);
+    gap: calc(100vw - 40em);
 }
 header#portrait{
     z-index: 2;
@@ -114,10 +114,10 @@ header button{
     margin: 0;
     position: fixed;
     z-index: 1;
-    height: 27ch;
+    height: 35ch;
     width: 100vw;
     left: 0;
-    top: -12rem;
+    top: -13rem;
     background: var(--dropdown);
     transition: top 1s;
 }
@@ -125,7 +125,7 @@ header button{
     top: 4.6rem;
 }
 main.menu-open{
-    top: 30ch;
+    top: 33ch;
 }
 ul{
     background-color: var(--dropdown);
@@ -316,7 +316,7 @@ a, a:link, a:active, a:visited{
     margin-block: 10px;
 }
 [data-prediction]{
-    --max-lines: 3;
+    --max-lines: 2;
     margin-inline: 10px;
     display: -webkit-box;
     overflow: hidden;
@@ -343,6 +343,47 @@ a, a:link, a:active, a:visited{
     margin-left: 10px;
 }
 /* Predictions cards end */
+
+/* Dialogs */
+.dialog{
+    width: 80vw;
+    max-width: 600px;
+    height: 80vh;
+    max-height: 80ch;
+    padding: 0;
+    overflow-x: hidden;
+    user-select: none;
+    border-radius: 2%;
+    background-color: var(--background-white);
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
+}
+.dialog::backdrop{
+    background: rgba(10, 10, 10, 0.5);
+    pointer-events: none;
+}
+dialog button{
+    cursor: pointer;
+}
+.exitModal{
+    position: absolute;
+    left: calc(100% - 2.5em);
+    top: 0.5em;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    color: inherit;
+    background: none;
+}
+.button-underline{
+    background: none;
+    border: none;
+    text-decoration: underline;
+    /* font-family: inherit; */
+    cursor: pointer;
+    font-size: 0.8em;
+    color: var(--header-color);
+}
+/* Dialogs End */
 
 .text-left-align{
     text-align: left;

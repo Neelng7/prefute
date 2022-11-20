@@ -339,14 +339,15 @@ edit_AccountSignoutBtn.addEventListener('click', () => {
 })
 
 editProfileBtn.addEventListener('click', () => editProfileModal.showModal());
-exitModal.addEventListener("click", () => {
+exitModal.addEventListener("click", exitEditChanges);
+function exitEditChanges(){
     if(accountEditChanges.file != null || accountEditChanges.name != null || accountEditChanges.dob != null){
         if(confirm("Leave Unsaved Changes?")){
             editProfileModal.close();
             resetAccountChanges();
             }
     }else editProfileModal.close();
-});
+}
 
 //delete user
 const signinMssg = document.getElementById("signin-mssg");
@@ -573,6 +574,19 @@ function uploadProfilePic_Storage(){
         .catch(err => console.log(err));
 }
 
+/*
+function dataURL(url){
+    fetch(url).then(file => {
+        const reader = new FileReader();
+        file.blob().then(imageBlob => {
+            reader.readAsDataURL(imageBlob);
+            reader.onloadend = () => {
+            console.log(reader.result)
+            }
+        })
+    })
+}*/
+
 //View Favourites 
 const viewFavouritesBtn = document.getElementById("view-favourites");
 const favouriteDialog = document.getElementById("favourites-dialog");
@@ -643,6 +657,24 @@ function populateFavourites(){
     })
 }
 
+//KeyBoard Shortcuts
+document.addEventListener('keydown', keydown => {
+    if(keydown["altKey"]){
+        switch(keydown.key.toLowerCase()){
+            case "f":
+                exitEditChanges();
+                if(favouriteDialog.open) favouriteDialog.close();
+                else favouriteDialog.showModal();
+                break;
+            case "e":
+                favouriteDialog.close();
+                if(!editProfileModal.open) editProfileModal.showModal();
+                else exitEditChanges();
+                break;
+        }
+    }
+})
+
 //hide all
 function hideAllElements(exemption, title){
     accountDetailsContainer.classList.toggle("hide", true);
@@ -657,3 +689,4 @@ function hideAllElements(exemption, title){
 
 
 //Errors
+

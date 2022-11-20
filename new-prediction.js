@@ -70,17 +70,17 @@ newPredictionSubmit.addEventListener('click', () => {
     var stopFn = 0
     prohibitedSymbols.forEach(e => {
         if(predictionID.value.includes(e)){
-            containerAlert.innerHTML = `Prediction Id is invalid.<br> Prediction Id cannot contain "${e}"`;
+            containerAlert.innerHTML = `Prefute Id is invalid.<br> Prefute Id cannot contain "${e}"`;
             predictionID.focus();
             stopFn -= 1;
         }else stopFn += 1;
     })
     if(stopFn != prohibitedSymbols.length);
     else if(predictionID.value.trim() == ""){
-        containerAlert.textContent = "Enter a prediction Id";
+        containerAlert.textContent = "Enter a Prefute Id";
         predictionID.focus();
     }else if(predictionID.value.includes(" ")){
-        containerAlert.textContent = "Prediction Id cannot contain a space";
+        containerAlert.textContent = "Prefute Id cannot contain a space";
         predictionID.focus(); 
     }else if(prediction.value.trim() == ""){
         containerAlert.textContent = "Enter a prediction";
@@ -98,7 +98,7 @@ newPredictionSubmit.addEventListener('click', () => {
         containerAlert.textContent = "Password cannot contain a space";
         password.focus();
     }else if(predictionIDs.includes(predictionID.value.trim())){
-        containerAlert.innerHTML = "Prediction Id is already taken.<br> Please enter a unique ID.";
+        containerAlert.innerHTML = "Prefute Id is already taken.<br> Please enter a unique ID.";
         predictionID.focus();
     }else uploadData();
 })
@@ -127,8 +127,7 @@ async function uploadData(){
         tags: publicTags.value
     });
 
-    console.log("Prediction Uploaded.")
-    console.log(new Date(uploadDateModified).getTime(), uploadDateModified);
-    alert("Prediction Uploaded");
+    console.log("Prefute Uploaded.")
+    alert("Prefute Uploaded");
     window.location.reload();
 }

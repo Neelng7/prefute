@@ -34,7 +34,6 @@ function displayPredictions(id, uid, dbUser){
     var dbPredictionRef  = database.ref(`/users/${uid}/${id}/`);
     dbPredictionRef.once("value",(data) => {
         dbPrediction = data.val();
-        console.log(id)
         if(!dbPrediction) return;
 
         const card = userCardTemplate.content.cloneNode(true).children[0];
@@ -57,21 +56,21 @@ function displayPredictions(id, uid, dbUser){
 
         if(dbPrediction.password.password != ""){
             predictionLock.classList.add("fa-lock");
-            predictionLock.title = "Prediction is Private";
+            predictionLock.title = "Prefute is Private";
             if(!filterOnlyArray.includes("private")) return;
         }else{
             predictionLock.classList.add("fa-unlock");
-            predictionLock.title = "Prediction is Public";
+            predictionLock.title = "Prefute is Public";
             publicTags.textContent = dbPrediction.public.tags;
             if(!filterOnlyArray.includes("public")) return;
         }
         if(Local_ReleaseDate < new Date()){
             releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
-            releasedIcon.title = "Prediction has been released";
+            releasedIcon.title = "Prefute has been released";
             if(!filterOnlyArray.includes("released")) return;
         }else{
             releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
-            releasedIcon.title = "Prediction has not been released";
+            releasedIcon.title = "Prefute has not been released";
             if(!filterOnlyArray.includes("unreleased")) return;
         }
 

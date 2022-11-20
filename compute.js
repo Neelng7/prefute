@@ -23,9 +23,22 @@ baseElm.href = pageBaseURL;
 document.head.appendChild(baseElm);
 const AElms = document.querySelectorAll("a");
 AElms.forEach(elm => {
-    if(!rootURL.includes("github")) return;
+    if(rootURL.includes("55")) return;
     elm.href = elm.href.split(".html")[0];
 })
+
+//Report A Problem
+const reportDialog = document.getElementById("report-dialog");
+
+
+//Show/ Close Report Modal
+const reportAnchor = document.querySelectorAll(".reportAnchor");
+reportAnchor.forEach(btn => btn.addEventListener('click', () => reportDialog.showModal()));
+
+const cancelReportModal = document.getElementById("cancel-report-modal");
+const exitReportModal = document.getElementById("exit-report-modal");
+cancelReportModal.addEventListener('click', () => reportDialog.close());
+exitReportModal.addEventListener('click', () => reportDialog.close());
 
 //Dropdown menu toggle
 const dropdown = document.getElementById("dropdown");
@@ -59,6 +72,9 @@ document.addEventListener('keydown', keydown => {
                 break;
             case "5":
                 window.location.href = pageBaseURL+"/account"+suffix;
+                break;
+            case "6":
+                reportDialog.showModal();
                 break;
         }
     }

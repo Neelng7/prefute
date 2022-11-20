@@ -40,7 +40,7 @@
                 <a class="selected" title="Search (Alt+3)" href="search.html">Search</a>
                 <a title="New Prefute (Alt+4)" href="new.html">New Prefute</a>
                 <a title="My Account (Alt+5)" href="account.html">My Account</a>
-                <!-- <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br> -->
+                <a title="Report Problem (Alt+6)" class="reportAnchor">&#x2691;</a><br>
             </div>
         </header><br><br><br>
         <div id="dropdown-menu">
@@ -50,7 +50,7 @@
                 <a href="search.html"><li>Search</li></a>
                 <a href="new.html"><li>New Prefute</li></a>
                 <a href="account.html"><li>My Account</li></a>
-                <!-- <li id="reportAnchorDropdown">Report a Problem &#x2691;</li> -->
+                <li class="reportAnchor">Report a Problem &#x2691;</li>
             </ul>
         </div>
     
@@ -122,5 +122,24 @@
     </template>
 </div>
 </main>
+<dialog class="dialog" id="report-dialog">
+    <button title="Cancel" class="exitModal" id="exit-report-modal">&#x2715;</button>
+    <h1>Report A Problem</h1>
+    <div class="line-seperator edit-modal"></div>
+    <div>
+        <br><br>
+        <label for="report-summary">Summary:</label><br>
+        <textarea type="text" cols="30" rows="2" id="report-summary" placeholder="Summary"></textarea><br>
+
+        <label for="report-details">Problem Details:</label><br>
+        <textarea id="report-details" cols="30" rows="5" placeholder="Details"></textarea><br>
+
+        <label for="report-screenshot">Add a Screenshot (optional):</label>
+        <input type="file" id="report-screenshot"><br>
+
+        <button id="cancel-report-modal">Cancel</button>
+        <button id="submit-report">Report</button>
+    </div>
+</dialog>
 </body>
 </html>

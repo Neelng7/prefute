@@ -90,44 +90,6 @@ pre{
 
 
 /* Edit Profile */
-.dialog{
-    width: 80vw;
-    max-width: 600px;
-    height: 80vh;
-    max-height: 80ch;
-    padding: 0;
-    overflow-x: hidden;
-    user-select: none;
-    border-radius: 2%;
-    background-color: var(--background-white);
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
-}
-.dialog::backdrop{
-    background: rgba(10, 10, 10, 0.5);
-    pointer-events: none;
-}
-dialog button{
-    cursor: pointer;
-}
-.exitModal{
-    position: absolute;
-    left: calc(100% - 2.5em);
-    top: 0.5em;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-    color: inherit;
-    background: none;
-}
-.button-underline{
-    background: none;
-    border: none;
-    text-decoration: underline;
-    /* font-family: inherit; */
-    cursor: pointer;
-    font-size: 0.8em;
-    color: var(--header-color);
-}
 #check-icon{
     position: relative;
     color: rgb(50, 240, 50);
@@ -353,5 +315,9 @@ dialog button{
     .prediction-cards{
         position: absolute;
         left: 5vw;
+    }
+    .favourites-card{
+        width: fit-content;
+        margin: 15px auto;
     }
 }
