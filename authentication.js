@@ -311,11 +311,14 @@ backButtonCP.addEventListener('click', () => hideAllElements(accountDetailsConta
 forgotPasswordBtn.addEventListener('click', () => hideAllElements(forgotPasswordContainer, "Forgot Password"));
 
 sendForgotPasswordEmail.addEventListener('click', () => {
-    if(validateEmail(forgotPasswordInp.value) != ""){editProfileModal
-        auth.sendPasswordResetEmail(forgotPasswordInp.value, actionCodeSettings).then(() => {
-            forgotPasswordAlert.textContent = "An email has been sent to you with instrustions on how to reset your password.";
-        });
-    }else forgotPasswordAlert.textContent = "An Error Occured. Please try again later.";
+    auth.sendPasswordResetEmail(forgotPasswordInp.value, actionCodeSettings).then(() => {
+        console.log("Email Sent.")
+        forgotPasswordAlert.innerHTML = "An email has been sent to you with<br> instrustions on how to reset your password.";
+    }).catch(error => {
+        if(error.code == "auth/invalid-email") forgotPasswordAlert.innerHTML = "Please enter a valid email.";
+        else if(error.code == "auth/user-not-found") forgotPasswordAlert.innerHTML = "Error! User not found.";
+        else forgotPasswordAlert.innerHTML = "An Error Occured!<br> Please try again later.";
+    });
 })
 
 const validateEmail = (email) => {
