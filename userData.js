@@ -52,7 +52,7 @@ userRef.once("value", data => {
             
             const card = userCardTemplate.content.cloneNode(true).children[0];
             const predictionIdCard = card.querySelector("[data-prediction-id]");
-            const predictionCard = card.querySelector("[data-prediction]");
+            const uploadDateCard = card.querySelector("[data-upload-date]");
             const releaseDateCard = card.querySelector("[data-release-date]");
             const predictionLock = card.querySelector("[data-lock]");
             const releasedIcon = card.querySelector("[data-released]");
@@ -62,11 +62,14 @@ userRef.once("value", data => {
             var prediction = value.predictionData.prediction;
             prediction = prediction.length>80 ? prediction.slice(0,78)+"..." : prediction;
 
-            predictionIdCard.textContent = idx;
-            predictionCard.textContent = "Prediction: "+ prediction;
-            predictionCard.title = value.predictionData.prediction;
+            const Local_UploadDate = new Date(new Date(value.private.uploadDate));
+            const Local_UplaodTime = Local_UploadDate.toTimeString().split(":");
+
+            predictionIdCard.textContent = `Prediction ID: ${idx}`;
             releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
-                            
+            uploadDateCard.textContent = `Uploaded Date: ${Local_UploadDate.toDateString()}, at ${Local_UplaodTime[0]}:${Local_UplaodTime[1]}`;
+                     
+            
             if(value.password.password != ""){
                 predictionLock.classList.add("fa-lock");
                 predictionLock.title = "Prefute is Private";
