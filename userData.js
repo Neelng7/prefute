@@ -38,7 +38,7 @@ userRef.once("value", data => {
             accountPic.src = pageBaseURL+"/images/userProfilePicDefault.png";
             accountPic.src = value.photoURL;
             accountName.textContent =  userName;
-            accountEmail.textContent = value.email;
+            accountEmail.textContent = value.email.split("@")[0];
             pageTitle.textContent = userName + " - Predictions";
 
         }else{

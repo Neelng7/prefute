@@ -4,12 +4,12 @@
               "$uid":{
                     ".read": "$uid === auth.uid",
                   "userData":{
-                      ".read":"$uid != null",
+                      ".read":"true",
                       ".write": "$uid === auth.uid"
                   },  
                   "$predictionID":{
                     "predictionData":{
-                        ".read": "data.parent().child('public/release-timestamp').val() < now || $uid === auth.uid",
+                        ".read": "data.parent().child('public/release-timestamp').val() < now / 1000 || $uid === auth.uid",
                         ".write": "!newData.parent().child('public').exists() && $uid === auth.uid"
                     },
                     "private":{

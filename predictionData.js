@@ -130,7 +130,7 @@ function displayUserData(userUID){
                 accountPic.src = "https://neelng7.github.io/prefute/images/userProfilePicDefault.png";
                 accountPic.src = value.photoURL;
                 accountName.textContent =  displayName_formated.join(" ").trim();
-                accountEmail.textContent = value.email;
+                accountEmail.textContent = value.email.split("@")[0];
                 profileRedirect.href = `${prefix}/user${suffix}?${userUID}`;
 
             }else{
@@ -311,5 +311,7 @@ if(deletePredictionBtn) deletePredictionBtn.addEventListener('click', () => {
 // add read access if password is correct
 // firbase: uid: password
 // rules: if ...parent().child(auth.uid).val() == password.val() ....
+//data write
 
 // only read prediction password if auth.uid == user.uid
+

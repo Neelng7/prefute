@@ -40,7 +40,7 @@ const releaseDate = document.getElementById("release-date");
 const releaseTime = document.getElementById("release-time");
 const publicTags = document.getElementById("public-tags");
 const password = document.getElementById("password");
-var prohibitedSymbols = [".", "#", "$", "/", "[", "]", "\\", "@"];
+var prohibitedSymbols = [".", "#", "$", "/", "[", "]", "\\", "@", "+", "=", "!"];
 var predictionIDs = [], tomorrow = today, users;
 
 releaseDate.setAttribute("min", today.toISOString().split("T")[0]);

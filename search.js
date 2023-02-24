@@ -52,7 +52,7 @@ function displayPredictions(id, uid, dbUser){
         releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
 
         UserNameCard.textContent = "Name: " + dbUser.displayName;
-        UserEmailCard.textContent = "Email: " + dbUser.email;
+        UserEmailCard.textContent = "Username: " + dbUser.email.split("@")[0];
 
         if(dbPrediction.password.password != ""){
             predictionLock.classList.add("fa-lock");
