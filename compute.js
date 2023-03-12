@@ -80,3 +80,4 @@ document.addEventListener('keydown', keydown => {
     }
 })
 
+window.location.href = pageBaseURL+"/maintanace"+suffix
