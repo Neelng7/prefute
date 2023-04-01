@@ -1,6 +1,6 @@
 const accountPic = document.querySelector(".account-picture");
 const accountName = document.getElementById("account-name");
-const accountEmail = document.getElementById("account-email");
+const accountUsername = document.getElementById("account-username");
 const pageTitle = document.querySelector("title");
 const profileRedirect = document.getElementById("profile");
 const addToFavorites = document.getElementById("add-to-favorites");
@@ -13,90 +13,104 @@ const privatePredictionsCount = document.getElementById("private-predictions-cou
 const noPredictionsPara = document.getElementById("no-predictions-account");
 const userCardTemplate= document.querySelector("[data-predictions-template]");
 var publicPredictionsCountRef = 0, privatePredictionsCountRef = 0;
-var userPredictions, userName, favouritesData;
+var userPredictions, userDisplayname, favouritesData;
 
 if(window.location.search == "") window.location.href = pageBaseURL+prefix+"/404"+suffix;
 const userUID = window.location.search.slice(1,);
 auth.onAuthStateChanged(user => {
     if(!user) window.location.href = `${prefix}/account${suffix}?profile-rd-${userUID}`;
     if(window.location.search.includes(user.uid)) window.location.href = pageBaseURL+prefix+"/account"+suffix;
+    displayUserData(userUID);
     favourites();
 });
 
-var userRef  = database.ref(`/users/${userUID}/`);
-userRef.once("value", data => {
-    userPredictions = data.val();
-    if(userPredictions == null) window.location.href = pageBaseURL+prefix+"/404"+suffix;
 
-    for (const [idx, value] of Object.entries(userPredictions)){
-        if(idx == "userData"){
-            var displayName_formated = [];
-            var displayName = value.displayName.split(" ");
-            displayName.forEach(e => displayName_formated.push(e.slice(0,1).toUpperCase() + e.slice(1,)));
-            userName = displayName_formated.join(" ").trim();
+function displayUserData(userUID){
+    var userRef  = database.ref(`/users/${userUID}/userData`);
+    userRef.once("value", data => {
+        userData = data.val();
+        if(userData == null) window.location.href = pageBaseURL+prefix+"/404"+suffix;
 
-            accountPic.src = pageBaseURL+"/images/userProfilePicDefault.png";
-            accountPic.src = value.photoURL;
-            accountName.textContent =  userName;
-            accountEmail.textContent = value.email.split("@")[0];
-            pageTitle.textContent = userName + " - Predictions";
+        var displayName_formated = [];
+        var displayName = userData.displayName.split(" ");
+        displayName.forEach(e => displayName_formated.push(e.slice(0,1).toUpperCase() + e.slice(1,)));
+        userDisplayname = displayName_formated.join(" ").trim();
 
-        }else{
-            if(value.password.password == "") publicPredictionsCountRef += 1;
-            else privatePredictionsCountRef += 1;
+        accountPic.src = "https://prefute.com/images/userProfilePicDefault.png";
+        accountPic.src = userData.photoURL;
+        accountName.textContent =  userDisplayname;
+        accountUsername.textContent = userData.username;
+        publicPredictionsCount.textContent = userData.public;
+        privatePredictionsCount.textContent = userData.private;
 
-            publicPredictionsCount.textContent = publicPredictionsCountRef;
-            privatePredictionsCount.textContent = privatePredictionsCountRef;
-            if(publicPredictionsCountRef + privatePredictionsCountRef === 0) noPredictionsPara.classList.remove("hide");
-            else noPredictionsPara.classList.add("hide");
-            
-            const card = userCardTemplate.content.cloneNode(true).children[0];
-            const predictionIdCard = card.querySelector("[data-prediction-id]");
-            const uploadDateCard = card.querySelector("[data-upload-date]");
-            const releaseDateCard = card.querySelector("[data-release-date]");
-            const predictionLock = card.querySelector("[data-lock]");
-            const releasedIcon = card.querySelector("[data-released]");
+        if(userData.public +  userData.private === 0) noPredictionsPara.classList.remove("hide");
+        else noPredictionsPara.classList.add("hide");
 
-            const Local_ReleaseDate = new Date(new Date(value.public.releaseTimestamp));
-            const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
-            var prediction = value.predictionData.prediction;
-            prediction = prediction.length>80 ? prediction.slice(0,78)+"..." : prediction;
+    }).then(retriveData)
+}
 
-            const Local_UploadDate = new Date(new Date(value.private.uploadDate));
-            const Local_UplaodTime = Local_UploadDate.toTimeString().split(":");
-
-            predictionIdCard.textContent = `Prediction ID: ${idx}`;
-            releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
-            uploadDateCard.textContent = `Uploaded Date: ${Local_UploadDate.toDateString()}, at ${Local_UplaodTime[0]}:${Local_UplaodTime[1]}`;
-                     
-            
-            if(value.password.password != ""){
-                predictionLock.classList.add("fa-lock");
-                predictionLock.title = "Prefute is Private";
-            }else{
-                predictionLock.classList.add("fa-unlock");
-                predictionLock.title = "Prefute is Public";
-            }
-            if(Local_ReleaseDate < new Date()){
-                releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
-                releasedIcon.title = "Prefute has been released";
-            }else{
-                releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
-                releasedIcon.title = "Prefute has not been released";
-            }
-
-            card.href = `${prefix}/prediction${suffix}?id=${idx}&user=${userUID}`;
-            predictionCardContainer.append(card);
+function retriveData(){
+    var dataRef  = database.ref(`/data/`);
+    dataRef.once("value", data => {
+        dbData = data.val();
+        for (const [id, value] of Object.entries(dbData)){
+            if(value == userUID) displayPrefutes(id)
         }
+        document.getElementById("load").remove();
+        document.querySelector("template").remove();
+    })
+}
 
-        if(publicPredictionsCountRef+privatePredictionsCountRef == 0){
-            noPredictions.classList.remove("hide");
-        }
+async function displayPrefutes(prefuteID){
+    var prefuteContent = {prefuteId: prefuteID}
+
+    var privateDataRef  = database.ref(`/users/${userUID}/${prefuteID}/private`);
+    await privateDataRef.once("value",(data) => {
+        var privateData = data.val();
+        if(privateData) prefuteContent = Object.assign({}, prefuteContent, privateData);
+    })
+    var publicDataRef  = database.ref(`/users/${userUID}/${prefuteID}/public`);
+    await publicDataRef.once("value",(data) => {
+        var publicData = data.val();
+        if(publicData) prefuteContent = Object.assign({}, prefuteContent, publicData);
+    })
+    
+    const card = userCardTemplate.content.cloneNode(true).children[0];
+    const predictionIdCard = card.querySelector("[data-prediction-id]");
+    const uploadDateCard = card.querySelector("[data-upload-date]");
+    const releaseDateCard = card.querySelector("[data-release-date]");
+    const predictionLock = card.querySelector("[data-lock]");
+    const releasedIcon = card.querySelector("[data-released]");
+
+    const Local_ReleaseDate = new Date(new Date(prefuteContent.releaseTimestamp));
+    const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
+
+    const Local_UploadDate = new Date(new Date(prefuteContent.uploadDate));
+    const Local_UplaodTime = Local_UploadDate.toTimeString().split(":");
+
+    predictionIdCard.textContent = `Prediction ID: ${prefuteID}`;
+    releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
+    uploadDateCard.textContent = `Uploaded Date: ${Local_UploadDate.toDateString()}, at ${Local_UplaodTime[0]}:${Local_UplaodTime[1]}`;
+                
+    
+    if(!prefuteContent.isPublic){
+        predictionLock.classList.add("fa-lock");
+        predictionLock.title = "Prefute is Private";
+    }else{
+        predictionLock.classList.add("fa-unlock");
+        predictionLock.title = "Prefute is Public";
     }
-}).then(() => {
-    document.getElementById("load").remove();
-    document.querySelector("template").remove();
-});
+    if(Local_ReleaseDate < new Date()){
+        releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
+        releasedIcon.title = "Prefute has been released";
+    }else{
+        releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
+        releasedIcon.title = "Prefute has not been released";
+    }
+
+    card.href = `${prefix}/prediction${suffix}?id=${prefuteID}&user=${userUID}`;
+    predictionCardContainer.append(card);
+}
 
 // Add/Remove from favourites
 function favourites(){
@@ -112,7 +126,7 @@ function favourites(){
     })
 
     addToFavorites.addEventListener('click', () => {
-        database.ref(`/users/${auth.currentUser.uid}/userData/favourites`).update({ [userUID]: userName });
+        database.ref(`/users/${auth.currentUser.uid}/userData/favourites`).update({ [userUID]: userDisplayname });
         removeFromFavorites.classList.toggle("hide", false);
         addToFavorites.classList.toggle("hide", true);
         removeFromFavorites.removeAttribute("disabled");

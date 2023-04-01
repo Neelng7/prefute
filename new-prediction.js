@@ -16,7 +16,7 @@ var today = new Date();
 //convert timestamp to date by
 new Date("timestamp");
 
-var date = new Date("2022-4-5T18:48+05:30") > new Date("2022-04-05T18:47+04:00");
+// var date = new Date("2022-4-5T18:48+05:30") > new Date("2022-04-05T18:47+04:00");
 // Above date is 5th April 2022, at 6:48 PM, and it will convert the time from GMT+04:00 to GMT+05:30(a.k.a IST);
 
 // All dates (upload + release) are converted are stored in GMT
@@ -42,6 +42,7 @@ const publicTags = document.getElementById("public-tags");
 const password = document.getElementById("password");
 var prohibitedSymbols = [".", "#", "$", "/", "[", "]", "\\", "@", "+", "=", "!"];
 var predictionIDs = [], tomorrow = today, users;
+var publicCount = 0, privateCount = 0;
 
 releaseDate.setAttribute("min", today.toISOString().split("T")[0]);
 tomorrow.setDate(tomorrow.getDate() + 1);
@@ -104,30 +105,48 @@ newPredictionSubmit.addEventListener('click', () => {
 })
 
 async function uploadData(){
-    if(predictionVisibility.value == "Public") password.value = "";
+
+    var userUID = auth.currentUser.uid
+    var countRef = database.ref(`users/${userUID}/userData/`);
+    await countRef.once("value", data => {
+        var userData = data.val();
+        publicCount = userData.public
+        privateCount = userData.private
+    });
+
+    var isPublic = predictionVisibility.value == "Public"
+    if(isPublic){
+        password.value = "";
+        publicCount += 1;
+    }else privateCount += 1;
+
     var today = new Date();
     var releaseDateModified = new Date(releaseDate.value+"T"+releaseTime.value).toGMTString();
     var uploadDateModified = today.toGMTString();
 
     await database.ref("/data/").update({
-        [predictionID.value]: auth.currentUser.uid
-    })
-
-    await database.ref(`/users/${auth.currentUser.uid}/${predictionID.value}/private`).set({
+        [predictionID.value]: userUID
+    });
+    await database.ref(`/users/${userUID}/userData`).update({
+        public: publicCount,
+        private: privateCount
+    });
+    await database.ref(`/users/${userUID}/${predictionID.value}/private`).set({
         uploadDate: new Date(uploadDateModified).getTime()
     });
-    await database.ref(`/users/${auth.currentUser.uid}/${predictionID.value}/password`).set({
+    await database.ref(`/users/${userUID}/${predictionID.value}/password`).set({
         password: password.value
     });
-    await database.ref(`/users/${auth.currentUser.uid}/${predictionID.value}/predictionData`).set({
+    await database.ref(`/users/${userUID}/${predictionID.value}/predictionData`).set({
         prediction: prediction.value
     });
-    await database.ref(`/users/${auth.currentUser.uid}/${predictionID.value}/public`).set({
+    await database.ref(`/users/${userUID}/${predictionID.value}/public`).set({
         releaseTimestamp: new Date(releaseDateModified).getTime(),
-        tags: publicTags.value
+        tags: publicTags.value, 
+        isPublic: isPublic
     });
 
     console.log("Prefute Uploaded.")
     alert("Prefute Uploaded");
-    window.location.reload();
+    window.location.href = pageBaseURL+`${prefix}/account${suffix}`;
 }

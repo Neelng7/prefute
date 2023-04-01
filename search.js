@@ -2,7 +2,7 @@ const userCardTemplate= document.querySelector("[data-template]");
 const predictionCardContainer= document.querySelector("[data-prediction-cards-container]");
 const searchLoad = document.getElementById("search-load");
 const noPredictionFound = document.querySelector(".no-prediction-found");
-var dbData, dbPrediction, dbUser;
+var dbData, dbPrediction, dbUser, count = 0;
 var filterOnlyArray = ["released", "unreleased", "public", "private"];
 getData();
 
@@ -16,72 +16,74 @@ function getData(){
         // for (const [idx, value] of Object.entries(dbData)){
         Object.entries(dbData).forEach(data => {
             var value = data[1], idx = data[0];
-            if(idx === "user-data") return;
-            else if(idx.includes("@")) return;
+            if(idx === "userData") return;
+            else if(value == null || value == undefined || value == "") return;
             else{
                 if(auth.currentUser && auth.currentUser.uid == value) return;
                 var dbUserRef  = database.ref(`/users/${value}/userData/`);
                 dbUserRef.once("value", data => {
                     dbUser = data.val();
-                    displayPredictions(idx, value, dbUser);
+                    if(dbUser !== null) displayPredictions(idx, value, dbUser);
                 })
             }
         })
     });
 }
+    
+async function displayPredictions(id, uid, dbUser){
 
-function displayPredictions(id, uid, dbUser){
-    var dbPredictionRef  = database.ref(`/users/${uid}/${id}/`);
-    dbPredictionRef.once("value",(data) => {
-        dbPrediction = data.val();
-        if(!dbPrediction) return;
+    var predictionCardData = {prefuteId: id, name: dbUser.displayName, username: dbUser.username}
 
-        const card = userCardTemplate.content.cloneNode(true).children[0];
-        const predictionIdCard = card.querySelector("[data-prediction-id]");
-        const UserNameCard = card.querySelector("[data-user-name]");
-        const UserEmailCard = card.querySelector("[data-user-email]");
-        const releaseDateCard = card.querySelector("[data-release-date]");
-        const predictionLock = card.querySelector("[data-lock]");
-        const releasedIcon = card.querySelector("[data-released]");
-        const publicTags = card.querySelector("[data-tags]");
-
-        const Local_ReleaseDate = new Date(dbPrediction.public.releaseTimestamp);
-        const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
-
-        predictionIdCard.textContent = id;
-        releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
-
-        UserNameCard.textContent = "Name: " + dbUser.displayName;
-        UserEmailCard.textContent = "Username: " + dbUser.email.split("@")[0];
-
-        if(dbPrediction.password.password != ""){
-            predictionLock.classList.add("fa-lock");
-            predictionLock.title = "Prefute is Private";
-            if(!filterOnlyArray.includes("private")) return;
-        }else{
-            predictionLock.classList.add("fa-unlock");
-            predictionLock.title = "Prefute is Public";
-            publicTags.textContent = dbPrediction.public.tags;
-            if(!filterOnlyArray.includes("public")) return;
-        }
-        if(Local_ReleaseDate < new Date()){
-            releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
-            releasedIcon.title = "Prefute has been released";
-            if(!filterOnlyArray.includes("released")) return;
-        }else{
-            releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
-            releasedIcon.title = "Prefute has not been released";
-            if(!filterOnlyArray.includes("unreleased")) return;
-        }
-
-        card.href = `${prefix}/prediction${suffix}?id=${id}&user=${uid}`;
-        predictionCardContainer.append(card);
-    }).then(() => {
-        searchLoad.classList.toggle("hide", true);
-        if(predictionCardContainer.children.length == 0) noPredictionFound.classList.toggle("hide", false);
-        else noPredictionFound.classList.toggle("hide", true);
+    var publicDataRef  = database.ref(`/users/${uid}/${id}/public`);
+    await publicDataRef.once("value",(data) => {
+        var publicData = data.val();
+        if(publicData) predictionCardData = Object.assign({}, predictionCardData, publicData);
     });
+
+    searchLoad.classList.toggle("hide", true);
+
+    const card = userCardTemplate.content.cloneNode(true).children[0];
+    const predictionIdCard = card.querySelector("[data-prediction-id]");
+    const UserNameCard = card.querySelector("[data-user-name]");
+    const UserUsernameCard = card.querySelector("[data-user-email]");
+    const releaseDateCard = card.querySelector("[data-release-date]");
+    const predictionLock = card.querySelector("[data-lock]");
+    const releasedIcon = card.querySelector("[data-released]");
+    const publicTags = card.querySelector("[data-tags]");
+
+    const Local_ReleaseDate = new Date(predictionCardData.releaseTimestamp);
+    const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
+    releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
+
+    UserNameCard.textContent = "Name: " + predictionCardData.name;
+    UserUsernameCard.textContent = "Username: " + predictionCardData.username;
+    predictionIdCard.textContent = predictionCardData.prefuteId;
+
+    if(!predictionCardData.isPublic){
+        predictionLock.classList.add("fa-lock");
+        predictionLock.title = "Prefute is Private";
+        if(!filterOnlyArray.includes("private")) return;
+    }else{
+        predictionLock.classList.add("fa-unlock");
+        predictionLock.title = "Prefute is Public";
+        publicTags.textContent = predictionCardData.tags;
+        if(!filterOnlyArray.includes("public")) return;
+    }
+    if(Local_ReleaseDate < new Date()){
+        releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
+        releasedIcon.title = "Prefute has been released";
+        if(!filterOnlyArray.includes("released")) return;
+    }else{
+        releasedIcon.src = pageBaseURL+"/images/notReleased-symbol.png";
+        releasedIcon.title = "Prefute has not been released";
+        if(!filterOnlyArray.includes("unreleased")) return;
+    }
+
+    card.href = `${prefix}/prediction${suffix}?id=${id}&user=${uid}`;
+    predictionCardContainer.append(card);
+    count += 1;
 }
+
 
 //Search Only Filters
 const searchOnlyFilters = document.querySelectorAll(".search-only-filter");

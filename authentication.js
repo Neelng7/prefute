@@ -7,6 +7,7 @@ const emailSignIn = document.getElementById("email-signIn");
 const passwordSignIn = document.getElementById("password-signIn");
 const confirmPassword = document.getElementById("confirmPassword");
 const emailSignUp = document.getElementById("email-signUp");
+const usernameSignup = document.getElementById("username-signUp");
 const passwordSignUp = document.getElementById("password-signUp");
 const signUpName = document.getElementById("signup-name");
 const DOBsignUp = document.getElementById("signup-dob");
@@ -105,33 +106,50 @@ document.addEventListener('keydown', (click) => {
 })
 
 function signup_verify(){
-    if(signUpName.value.trim() == ""){
-        signupAlert.textContent = "Please enter a name";
-        signUpName.focus();
-    }else if(signUpName.value.length > 50){
-        signupAlert.textContent = "Name must be less than 50 characters";
-        signUpName.focus();
-    }else if(DOBsignUp.value == ""){
-        signupAlert.textContent = "Please enter your date of birth";
-        DOBsignUp.focus();
-    }else if(emailSignUp.value.trim() == ""){
-        signupAlert.textContent = "Please enter an email";
-        emailSignUp.focus();
-    }else if(validateEmail(emailSignUp.value.trim()) == ""){
-        signupAlert.textContent = "Email is badly formatted";
-        emailSignUp.focus();
-    }else if(passwordSignUp.value.trim() == ""){
-        signupAlert.textContent = "Please enter a password";
-        passwordSignUp.focus();
-    }else if(confirmPassword.value.trim() == ""){
-        signupAlert.textContent = "Please enter your password again";
-        confirmPassword.focus();
-    }else if(passwordSignUp.value != confirmPassword.value){ 
-        signupAlert.textContent = "Passwords do not match";
-        passwordSignUp.focus();
-    }else{
-        signupAlert.textContent = "";
-        signup();}
+    var existingUsernamesRef = database.ref('/data/');
+    existingUsernamesRef.once("value", data => {
+        var existingUsernames = data.val()
+
+        if(existingUsernames.hasOwnProperty("UN:"+usernameSignup.value.trim())){
+            signupAlert.textContent = "Username already exists"
+            usernameSignup.focus();
+        }else if(signUpName.value.trim() == ""){
+            signupAlert.textContent = "Please enter a name";
+            signUpName.focus();
+        }else if(signUpName.value.length > 50){
+            signupAlert.textContent = "Name must be less than 50 characters";
+            signUpName.focus();
+        }else if(DOBsignUp.value == ""){
+            signupAlert.textContent = "Please enter your date of birth";
+            DOBsignUp.focus();
+        }else if(usernameSignup.value.trim() == ""){
+            signupAlert.textContent = "Please enter a username";
+            usernameSignup.focus();
+        }else if(usernameSignup.value.includes(" ")){
+            signupAlert.textContent = "Username cannot contain a space";
+            usernameSignup.focus();
+        }else if(usernameSignup.value.includes("@")){
+            signupAlert.textContent = "Username cannot contain an @"
+            usernameSignup.focus();
+        }else if(emailSignUp.value.trim() == ""){
+            signupAlert.textContent = "Please enter an email";
+            emailSignUp.focus();
+        }else if(validateEmail(emailSignUp.value.trim()) == ""){
+            signupAlert.textContent = "Email is badly formatted";
+            emailSignUp.focus();
+        }else if(passwordSignUp.value.trim() == ""){
+            signupAlert.textContent = "Please enter a password";
+            passwordSignUp.focus();
+        }else if(confirmPassword.value.trim() == ""){
+            signupAlert.textContent = "Please enter your password again";
+            confirmPassword.focus();
+        }else if(passwordSignUp.value != confirmPassword.value){ 
+            signupAlert.textContent = "Passwords do not match";
+            passwordSignUp.focus();
+        }else{
+            signupAlert.textContent = "";
+            signup();}
+    })
 }
 
 //Sign Up with email
@@ -159,11 +177,14 @@ async function addUserInfo(userCredential){
             displayName: signUpName.value,
             photoURL: reader.result,
             email: emailSignUp.value,
-            birthDate: DOBsignUp.value
+            username: usernameSignup.value,
+            birthDate: DOBsignUp.value,
+            public: 0,
+            private: 0
         });
-        await database.ref("/data/").update({
-            [`+${emailSignUp.value.split(".").join("!")}`]: auth.currentUser.uid
-        })
+        await database.ref('/data/').update({
+            ["UN:"+usernameSignup.value.trim()]: userCredential.user.uid
+        });
         window.location.reload();   
     }
 } 
@@ -181,7 +202,7 @@ passwordReveal.forEach(icon => {
 //Account Info
 const accountPic = document.querySelectorAll(".account-picture");
 const accountName = document.getElementById("account-name");
-const accountEmail = document.getElementById("account-email");
+const accountUsername = document.getElementById("account-username");
 
 const forgotPasswordBtn = document.getElementById("forgot-password");
 const forgotPasswordContainer = document.querySelector(".forgot-password-container");
@@ -196,6 +217,7 @@ const saveNewPassword = document.getElementById("save-new-password");
 const changePasswordAlert = document.getElementById("change-password-alert");
 
 const editDisplayNameInp = document.getElementById("edit-display-name");
+const editUsernameInp = document.getElementById("edit-username");
 const editDob = document.getElementById("edit-dob");
 const editEmailInp = document.getElementById("edit-email");
 
@@ -203,7 +225,7 @@ const publicPredictionsCount = document.getElementById("public-predictions-count
 const privatePredictionsCount = document.getElementById("private-predictions-count");
 const noPredictionsPara = document.getElementById("no-predictions-account");
 const loadSpan = document.getElementById("load");
-var userPredictions, userDOB;
+var userPredictions, userDOB, originalUsername;
 
 function diplayAccountDetails(user){
     var publicPredictionsCountRef = 0, privatePredictionsCountRef = 0;
@@ -216,7 +238,6 @@ function diplayAccountDetails(user){
     accountPic[0].src = pageBaseURL+"/images/userProfilePicDefault.png";
     accountPic[0].src = user.photoURL;
     accountName.textContent =  displayName_formated.join(" ").trim();
-    accountEmail.textContent = user.email;
 
     editDisplayNameInp.value = displayName_formated.join(" ").trim();
     editEmailInp.value = user.email;
@@ -232,6 +253,9 @@ function diplayAccountDetails(user){
     userPredictionsRef.once("value",(data) => {
         userPredictions = data.val();
         userDOB = userPredictions.userData.birthDate;
+        originalUsername = userPredictions.userData.username;
+        accountUsername.textContent = originalUsername;
+        editUsernameInp.value = originalUsername;
 
         for (const [idx, value] of Object.entries(userPredictions)){
             if(idx != "userData"){
@@ -299,7 +323,7 @@ function displayUserPredictions(){
 
 //fogot password
 var actionCodeSettings = {
-    url: 'https://neelng7.github.io/prefute/account',
+    url: 'https://prefute.com/account',
     handleCodeInApp: true
 }
 
@@ -344,7 +368,8 @@ edit_AccountSignoutBtn.addEventListener('click', () => {
 editProfileBtn.addEventListener('click', () => editProfileModal.showModal());
 exitModal.addEventListener("click", exitEditChanges);
 function exitEditChanges(){
-    if(accountEditChanges.file != null || accountEditChanges.name != null || accountEditChanges.dob != null){
+    if(accountEditChanges.file != null || accountEditChanges.name != null 
+        || accountEditChanges.dob != null || accountEditChanges.username != null){
         if(confirm("Leave Unsaved Changes?")){
             editProfileModal.close();
             resetAccountChanges();
@@ -365,8 +390,20 @@ deleteAccButton.addEventListener('click', () => {
     redirect = "delete-account";  
 })
 
-function deleteUserAccount(user){
+async function deleteUserAccount(user){
     if(confirm("Delete Account?")){
+        var userDataRef = database.ref(`users/${auth.currentUser.uid}/`);
+        await userDataRef.once("value", data => {
+            userData  = data.val();
+            for (const [idx, value] of Object.entries(userData)){
+                if(idx !== "userData") database.ref(`/data/${idx}/`).remove();
+                else database.ref('/data/UN:'+value.username).remove();
+            }
+        })
+        await database.ref(`users/${auth.currentUser.uid}/`).remove();
+        // var imageRef = storage.child('profile-picture/' + auth.currentUser.uid);
+        // if(imageRef) await imageRef.delete();
+
         user.delete()
         .then(() => {
             console.log('Successfully deleted user');
@@ -443,10 +480,12 @@ const uploadProfilePic = document.getElementById("upload-profile-pic-inp");
 const deleteProfilePic = document.getElementById("delete-profile-pic");
 const editDisplayName = document.getElementById("edit-display-name");
 const saveAccountChanges = document.getElementById("save-account-changes");
-var accountEditChanges = {file: null, name: null, dob: null};
+const editModalAlert = document.getElementById("edit-modal-alert");
+var accountEditChanges = {file: null, name: null, dob: null, username: null};
 
 editDisplayName.addEventListener("input", () => accountEditChanges.name = editDisplayName.value);
 editDob.addEventListener('input', () => accountEditChanges.dob = editDob.value);
+editUsernameInp.addEventListener('input', () => accountEditChanges.username = editUsernameInp.value);
 
 uploadProfilePic.addEventListener("change", () => {
     var file = uploadProfilePic.files[0];
@@ -470,10 +509,12 @@ function resetAccountChanges(){
     accountEditChanges.file = null;
     accountEditChanges.name = null;
     accountEditChanges.dob = null;
+    accountEditChanges.username = null;
 
     editDob.value = userDOB;
     accountPic[1].src = auth.currentUser.photoURL;
     editDisplayNameInp.value = auth.currentUser.displayName;
+    editUsernameInp.value = originalUsername;
     imageName.textContent = "";
 }
 
@@ -509,29 +550,49 @@ deleteProfilePic.addEventListener('click',() =>{
 })
 
 //Save Changes - Edit Account
-saveAccountChanges.addEventListener('click', () => {
+saveAccountChanges.addEventListener('click', async () => {
     var user = auth.currentUser;
     
+    if(accountEditChanges.username){
+        var existingUsernamesRef = database.ref('/data/');
+        await existingUsernamesRef.once("value", async data => {
+            var existingUsernames = data.val()
+            if(existingUsernames.hasOwnProperty("UN:"+(accountEditChanges.username.trim()))){
+                editModalAlert.textContent = "Username already exists"
+            }else{
+                await database.ref(`/users/${user.uid}/userData/`).update({
+                    username: accountEditChanges.username.trim()
+                })
+                await database.ref('/data/'+originalUsername).remove()
+                await database.ref('/data/').update({
+                    ["UN:"+accountEditChanges.username.trim()]: user.uid
+                })
+                if(accountEditChanges.name == null && accountEditChanges.file == null 
+                    || accountEditChanges.dob == null) window.location.reload();
+            }
+        })
+    }
+
     if(accountEditChanges.dob){
         saveAccountChanges.setAttribute("disabled", '');
 
-        database.ref(`/users/${user.uid}/userData`).update({
+        await database.ref(`/users/${user.uid}/userData`).update({
             birthDate: accountEditChanges.dob
-        }).then(() => {
-            if(accountEditChanges.name == null && accountEditChanges.file == null) window.location.reload();
-        });
+        })
+        
+        if(accountEditChanges.name == null && accountEditChanges.file == null) window.location.reload();
     }
 
     if(accountEditChanges.name){ 
         saveAccountChanges.setAttribute("disabled", '');
 
         if(user.photoURL.includes("firebasestorage") || accountEditChanges.file){
-            user.updateProfile({displayName: accountEditChanges.name}).then(() => {
-                database.ref("/users/"+user.uid+"/userData/").update({displayName: accountEditChanges.name}).then(() => {
-                    if(accountEditChanges.file) uploadProfilePic_Storage();
-                    else window.location.reload();
-                })
-            });
+            await user.updateProfile({displayName: accountEditChanges.name})
+            await database.ref("/users/"+user.uid+"/userData/").update({displayName: accountEditChanges.name})
+
+            if(accountEditChanges.file) uploadProfilePic_Storage();
+            else window.location.reload();
+
         }else{
             fetch(`https://ui-avatars.com/api/?background=random&name=${accountEditChanges.name.split(" ").join("+")}`)
                 .then(file => {
@@ -553,7 +614,7 @@ saveAccountChanges.addEventListener('click', () => {
                 })
         }
     }else if(accountEditChanges.file) uploadProfilePic_Storage();
-    else alert("No unsaved changes");
+    // else alert("No unsaved changes");
 })
 
 function uploadProfilePic_Storage(){
@@ -576,19 +637,6 @@ function uploadProfilePic_Storage(){
         })
         .catch(err => console.log(err));
 }
-
-/*
-function dataURL(url){
-    fetch(url).then(file => {
-        const reader = new FileReader();
-        file.blob().then(imageBlob => {
-            reader.readAsDataURL(imageBlob);
-            reader.onloadend = () => {
-            console.log(reader.result)
-            }
-        })
-    })
-}*/
 
 //View Favourites 
 const viewFavouritesBtn = document.getElementById("view-favourites");

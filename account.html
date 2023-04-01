@@ -29,7 +29,7 @@
 </head>
 <body>
     <header id="portrait"><br>
-        <a href="/"><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
+        <a href="/"><img src="https://prefute.com/images/LogoWhite.png" alt=""></a>
         <b>Prefute</b>
         <button id="dropdown"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" role="img" 
             style="height:25px;width:25px;"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-list-ul 
@@ -43,7 +43,7 @@
     </header>
     <header id="landscape">
         <div class="page-title">
-            <a href="/"><img src="https://neelng7.github.io/prefute/images/LogoWhite.png" alt=""></a>
+            <a href="/"><img src="https://prefute.com/images/LogoWhite.png" alt=""></a>
             <h1 id="h1main">Prefute</h1></div>
             <div class="page-anchors">
                 <a title="Home (Alt+1)" href="/">Home</a>
@@ -70,7 +70,7 @@
         <h1>My Account</h1>
 
         <div class="account-display-container">
-        <img class="account-picture" src="https://neelng7.github.io/prefute/images/userProfilePicDefault.png">
+        <img class="account-picture" src="https://prefute.com/images/userProfilePicDefault.png">
         <div class="account-info-conatiner">
             <p id="account-name"></p>
             <span class="prediction-count">
@@ -78,7 +78,7 @@
                 <p><span id="public-predictions-count"></span> Public</p>
                 <p><span id="private-predictions-count"></span> Private</p>
             </span>
-            <p id="account-email"></p><br>
+            <p id="account-username"></p><br>
             <div class="account-info-btns">
                 <button id="signout-btn">Sign Out</button>
                 <button id="edit-profile-btn">Edit Profile</button><br>
@@ -117,7 +117,7 @@
     <h2>Edit Profile</h2>
     
     <label for="upload-profile-pic-inp">
-    <img class="account-picture" alt="" id="edit-profile-pic" src="https://neelng7.github.io/prefute/images/userProfilePicDefault.png">
+    <img class="account-picture" alt="" id="edit-profile-pic" src="https://prefute.com/images/userProfilePicDefault.png">
     </label><br>
     <label for="upload-profile-pic-inp" id="upload-profile-pic-label" class="button-underline">
         Change Profile Photo
@@ -126,10 +126,15 @@
     <span id="imageName"></span>
     <input type="file" id="upload-profile-pic-inp" accept="image/jpeg, image/png, image/jpg">
 
+    <p id="edit-modal-alert" class="alert"></p>
+
     <div class="edit-profile-container">
 
         <label for="edit-display-name"><pre>Display Name:</pre></label>
         <input type="text" name="name" id="edit-display-name" placeholder="name"><br>
+
+        <label for="edit-username"><pre>Username:        </pre></label>
+        <input type="text" name="username" id="edit-username" placeholder="username"><br>
         
         <label for="edit-dob"><pre>Date of Birth:  </pre></label>
         <input type="date" id="edit-dob"><br>
@@ -170,7 +175,7 @@
     <template data-favourites-template>
         <div class="favourites-card">
             <div class="fav-wrapper">
-            <img src="https://neelng7.github.io/prefute/images/userProfilePicDefault.png" class="fav-user-pfp" data-user-pfp>
+            <img src="https://prefute.com/images/userProfilePicDefault.png" class="fav-user-pfp" data-user-pfp>
             <span class="fav-user-data">
                 <b class="header" data-user-name></b><br>
                 <div data-email></div>
@@ -227,6 +232,9 @@
             <div><label for="signup-dob"><pre>Date of Birth:          </pre></label>
             <input class="inp" type="date" id="signup-dob" value="2006-04-05">
             </div>
+            <div><label for="username-signUp"><pre>Username:                </pre></label>
+                <input class="inp" type="text" id="username-signUp" name="username" placeholder="username">
+                </div>
             <div><label for="email-signUp"><pre>Email:                        </pre></label>
             <input class="inp" type="email" id="email-signUp" name="email" placeholder="email">
             </div>
