@@ -18,6 +18,7 @@ function getData(){
             var value = data[1], idx = data[0];
             if(idx === "userData") return;
             else if(value == null || value == undefined || value == "") return;
+            else if(idx.includes("UN:")) return;
             else{
                 if(auth.currentUser && auth.currentUser.uid == value) return;
                 var dbUserRef  = database.ref(`/users/${value}/userData/`);
