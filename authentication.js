@@ -13,19 +13,19 @@ const signUpName = document.getElementById("signup-name");
 const DOBsignUp = document.getElementById("signup-dob");
 const phoneNoSignUp = document.getElementById("phone");
 const passwordReveal = document.querySelectorAll(".password-reveal");
-const predictionCardContainer= document.querySelector("[data-prediction-cards-container]");
-const userCardTemplate= document.querySelector("[data-predictions-template]");
+const prefuteCardContainer= document.querySelector("[data-prefute-cards-container]");
+const userCardTemplate= document.querySelector("[data-prefutes-template]");
 var storage = firebase.storage().ref(), redirect = "";
 
 auth.onAuthStateChanged(user => {
     if (user) {
         if(redirect === "delete-account") deleteUserAccount(user);
         else if(redirect === "change-password") changeUserPassword();
-        else if(redirect === "new-precition") window.location.href = pageBaseURL+prefix+"/new"+suffix;
+        else if(redirect === "new-precition") window.location.href = pageBaseURL+"/new"+suffix;
         else if(redirect.includes("profile-rd")){
             if(redirect.split("-")[2] != user.uid) window.open(`${prefix}/user${suffix}?${redirect.split("-")[2]}`);
             window.location.href = pageBaseURL+prefix+"/account"+suffix;
-        }else if(window.location.search.includes("private-rd")) window.location.href = pageBaseURL+prefix+"/prediction"+suffix+redirect.split("-")[2];
+        }else if(window.location.search.includes("private-rd")) window.location.href = `${pageBaseURL}/prefute${suffix}?${redirect.split("-")[2]}`;
         else {
             hideAllElements(accountDetailsContainer, "My Account");
             diplayAccountDetails(user);
@@ -221,16 +221,16 @@ const editUsernameInp = document.getElementById("edit-username");
 const editDob = document.getElementById("edit-dob");
 const editEmailInp = document.getElementById("edit-email");
 
-const publicPredictionsCount = document.getElementById("public-predictions-count");
-const privatePredictionsCount = document.getElementById("private-predictions-count");
-const noPredictionsPara = document.getElementById("no-predictions-account");
+const publicprefutesCount = document.getElementById("public-prefutes-count");
+const privateprefutesCount = document.getElementById("private-prefutes-count");
+const noprefutesPara = document.getElementById("no-prefutes-account");
 const loadSpan = document.getElementById("load");
-var userPredictions, userDOB, originalUsername;
+var userprefutes, userDOB, originalUsername;
 
 function diplayAccountDetails(user){
-    var publicPredictionsCountRef = 0, privatePredictionsCountRef = 0;
+    var publicprefutesCountRef = 0, privateprefutesCountRef = 0;
 
-    predictionCardContainer.innerHTML = "";
+    prefuteCardContainer.innerHTML = "";
     var displayName_formated = [];
     var displayName = user.displayName.split(" ");
     displayName.forEach(e => displayName_formated.push(e.slice(0,1).toUpperCase() + e.slice(1,)));
@@ -246,63 +246,63 @@ function diplayAccountDetails(user){
 
     const localPublicCount = window.localStorage.getItem('public');
     const localPrivateCount = window.localStorage.getItem('private');
-    if(localPublicCount) publicPredictionsCount.textContent = localPublicCount;
-    if(localPrivateCount) privatePredictionsCount.textContent = localPrivateCount;
+    if(localPublicCount) publicprefutesCount.textContent = localPublicCount;
+    if(localPrivateCount) privateprefutesCount.textContent = localPrivateCount;
 
-    var userPredictionsRef  = database.ref(`/users/${user.uid}/`);
-    userPredictionsRef.once("value",(data) => {
-        userPredictions = data.val();
-        userDOB = userPredictions.userData.birthDate;
-        originalUsername = userPredictions.userData.username;
+    var userprefutesRef  = database.ref(`/users/${user.uid}/`);
+    userprefutesRef.once("value",(data) => {
+        userprefutes = data.val();
+        userDOB = userprefutes.userData.birthDate;
+        originalUsername = userprefutes.userData.username;
         accountUsername.textContent = originalUsername;
         editUsernameInp.value = originalUsername;
 
-        for (const [idx, value] of Object.entries(userPredictions)){
+        for (const [idx, value] of Object.entries(userprefutes)){
             if(idx != "userData"){
-                if(value.password.password == "") publicPredictionsCountRef += 1;
-                else privatePredictionsCountRef += 1;
+                if(value.password.password == "") publicprefutesCountRef += 1;
+                else privateprefutesCountRef += 1;
             }
         }
-        publicPredictionsCount.textContent = publicPredictionsCountRef;
-        privatePredictionsCount.textContent = privatePredictionsCountRef;
-        if(publicPredictionsCountRef + privatePredictionsCountRef === 0) noPredictionsPara.classList.remove("hide");
-        else noPredictionsPara.classList.add("hide");
-        window.localStorage.setItem('public', publicPredictionsCountRef);
-        window.localStorage.setItem('private', privatePredictionsCountRef);
+        publicprefutesCount.textContent = publicprefutesCountRef;
+        privateprefutesCount.textContent = privateprefutesCountRef;
+        if(publicprefutesCountRef + privateprefutesCountRef === 0) noprefutesPara.classList.remove("hide");
+        else noprefutesPara.classList.add("hide");
+        window.localStorage.setItem('public', publicprefutesCountRef);
+        window.localStorage.setItem('private', privateprefutesCountRef);
     }).then(() => {
         editDob.value = userDOB;
-        displayUserPredictions();
+        displayUserprefutes();
     })
 }
 
-function displayUserPredictions(){
-    var userPredictionsRef  = database.ref(`/users/${auth.currentUser.uid}/`);
-    userPredictionsRef.once("value", data => {
-        userPredictions = data.val();
-        for (const [idx, value] of Object.entries(userPredictions)){
+function displayUserprefutes(){
+    var userprefutesRef  = database.ref(`/users/${auth.currentUser.uid}/`);
+    userprefutesRef.once("value", data => {
+        userprefutes = data.val();
+        for (const [idx, value] of Object.entries(userprefutes)){
             if(idx != "userData"){
                 const card = userCardTemplate.content.cloneNode(true).children[0];
-                const predictionIdCard = card.querySelector("[data-prediction-id]");
-                const predictionCard = card.querySelector("[data-prediction]");
+                const prefuteIdCard = card.querySelector("[data-prefute-id]");
+                const prefuteCard = card.querySelector("[data-prefute]");
                 const releaseDateCard = card.querySelector("[data-release-date]");
-                const predictionLock = card.querySelector("[data-lock]");
+                const prefuteLock = card.querySelector("[data-lock]");
                 const releasedIcon = card.querySelector("[data-released]");
 
                 const Local_ReleaseDate = new Date(value.public.releaseTimestamp);
                 const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
-                var prediction = value.predictionData.prediction;
+                var prefute = value.prefuteData.prefute;
 
-                predictionIdCard.textContent = idx;
-                predictionCard.textContent = "Prefute: "+ prediction;
-                predictionCard.title = value.predictionData.prediction;
+                prefuteIdCard.textContent = idx;
+                prefuteCard.textContent = "Prefute: "+ prefute;
+                prefuteCard.title = value.prefuteData.prefute;
                 releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
                 
                 if(value.password.password != ""){
-                    predictionLock.classList.add("fa-lock");
-                    predictionLock.title = "Prefute is Private";
+                    prefuteLock.classList.add("fa-lock");
+                    prefuteLock.title = "Prefute is Private";
                 }else{
-                    predictionLock.classList.add("fa-unlock");
-                    predictionLock.title = "Prefute is Public";
+                    prefuteLock.classList.add("fa-unlock");
+                    prefuteLock.title = "Prefute is Public";
                 }
                 if(Local_ReleaseDate < new Date()){
                     releasedIcon.src = pageBaseURL+"/images/released-symbol.png";
@@ -312,8 +312,8 @@ function displayUserPredictions(){
                     releasedIcon.title = "Prefute has not been released";
                 }
 
-                card.href = `${prefix}/prediction${suffix}?id=${idx}&user=${auth.currentUser.uid}`;
-                predictionCardContainer.append(card);
+                card.href = `${prefix}/prefute${suffix}?id=${idx}&user=${auth.currentUser.uid}`;
+                prefuteCardContainer.append(card);
             }
         }
     }).then(() => {
@@ -555,22 +555,27 @@ saveAccountChanges.addEventListener('click', async () => {
     
     if(accountEditChanges.username){
         var existingUsernamesRef = database.ref('/data/');
-        await existingUsernamesRef.once("value", async data => {
+        await existingUsernamesRef.once("value", data => {
             var existingUsernames = data.val()
             if(existingUsernames.hasOwnProperty("UN:"+(accountEditChanges.username.trim()))){
                 editModalAlert.textContent = "Username already exists"
             }else{
-                await database.ref(`/users/${user.uid}/userData/`).update({
-                    username: accountEditChanges.username.trim()
-                })
-                await database.ref('/data/'+originalUsername).remove()
-                await database.ref('/data/').update({
+                database.ref('/data/').update({
                     ["UN:"+accountEditChanges.username.trim()]: user.uid
                 })
-                if(accountEditChanges.name == null && accountEditChanges.file == null 
-                    || accountEditChanges.dob == null) window.location.reload();
+                .then(async() => {
+                    await database.ref('/data/UN:'+originalUsername).remove()
+                    database.ref(`/users/${user.uid}/userData/`).update({
+                        username: accountEditChanges.username.trim()
+                    })
+                    .catch(error => console.log(error))
+                    .then(() => {
+                        if(accountEditChanges.name == null && accountEditChanges.file == null 
+                            || accountEditChanges.dob == null) window.location.reload();
+                    })
+                }).catch(error => alert(error))
             }
-        })
+        }).catch(error => console.log(error))
     }
 
     if(accountEditChanges.dob){
@@ -740,4 +745,5 @@ function hideAllElements(exemption, title){
 
 
 //Errors
+//".", "#", "$", "/", "[", or "]" in keys not allowed
 

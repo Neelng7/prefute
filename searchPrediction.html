@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="styles.css">
     <script src="compute.js" defer></script>
     <script src="search.js" defer></script>
-    <title>Search - Predictions</title>
+    <title>Search - prefutes</title>
 </head>
 <body>
     <header id="portrait"><br>
         <a href="/"><img src="images/LogoWhite.png"></a>
-        <b>Predictions</b>
+        <b>prefutes</b>
         <button id="dropdown"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list-ul" role="img" 
             style="height:25px;width:25px;"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-list-ul 
             fa-lg"><path fill="currentColor" d="M16 96C16 69.49 37.49 48 64 48C90.51 48 112 69.49 112 96C112 122.5 90.51 144 64 144C37.49 
@@ -32,11 +32,11 @@
     <header id="landscape">
         <div class="page-title">
             <a href="/"><img src="images/LogoWhite.png"></a>
-            <h1 id="h1main">Predictions</h1></div>
+            <h1 id="h1main">prefutes</h1></div>
         <div class="page-anchors">
             <a title="About (Alt+1)" href="/">About</a>
             <a class="selected" title="Search (Alt+2)" href="search.html">Search</a>
-            <a title="New Prediction (Alt+3)" href="new.html">New Prediction</a>
+            <a title="New prefute (Alt+3)" href="new.html">New prefute</a>
             <a title="My Account (Alt+4)" href="account.html">My Account</a>
             <a title="Report Problem (Alt+5)" id="reportAnchor">&#x2691;</a><br>
         </div>
@@ -45,7 +45,7 @@
         <ul><br>
             <a href='/'><li>About</li></a>
             <a href="search.html"><li>Search</li></a>
-            <a href="new.html"><li>New Prediction</li></a>
+            <a href="new.html"><li>New prefute</li></a>
             <a href="account.html"><li><i class="fa-solid fa-circle-user"></i> My Account</li></a>
             <li id="reportAnchorDropdown">Report a Problem &#x2691;</li>
         </ul>
@@ -54,17 +54,17 @@
 <main>
     <div class="fixed">
         <h1>Search</h1>
-        <p>Search for predictions by entering the <span class="search-type">prediction ID/ name/ email/ public tags</span></p>
+        <p>Search for prefutes by entering the <span class="search-type">prefute ID/ name/ email/ public tags</span></p>
         <p>Search by entering all relevant information seperated by a space</p><br>
 
-        <label for="search">Search Prediction: </label>
+        <label for="search">Search prefute: </label>
         <input type="search" id="search" data-seach>
         <p id="searchResults"></p>
 
         <div class="search-parameters-container">
             <h2>Search Filters</h2>
             <div class="searchBy-filters-wrapper">Search By: <br>
-                <label for="search-by-filter-1">Prediction ID</label>
+                <label for="search-by-filter-1">prefute ID</label>
                 <input type="checkbox" class="search-filter-checkbox" id="search-by-filter-1"><br>
                 <label for="search-by-filter-2">Username</label>
                 <input type="checkbox" class="search-filter-checkbox" id="search-by-filter-2"><br>
@@ -72,13 +72,13 @@
                 <input type="checkbox" class="search-filter-checkbox" id="search-by-filter-3"><br>
             </div><br>
             <div class="search-only-filters-wrapper">Only Show: <br>
-                <label for="search-only-filters-released">Released Predictions</label>
+                <label for="search-only-filters-released">Released prefutes</label>
                 <input type="checkbox" class="search-only-filter" id="search-only-filters-released"><br>
-                <label for="search-only-filters-unreleased">Unreleased Predictions</label>
+                <label for="search-only-filters-unreleased">Unreleased prefutes</label>
                 <input type="checkbox" class="search-only-filter" id="search-only-filters-unreleased"><br>
-                <label for="search-only-filters-public">Public Predictions</label>
+                <label for="search-only-filters-public">Public prefutes</label>
                 <input type="checkbox" class="search-only-filter" id="search-only-filters-public"><br>
-                <label for="search-only-filters-private">Private Predictions</label>
+                <label for="search-only-filters-private">Private prefutes</label>
                 <input type="checkbox" class="search-only-filter" id="search-only-filters-private"><br>
             </div>
         </div>
@@ -87,12 +87,12 @@
     <i class="fa-solid fa-circle-notch fa-spin" id="search-load"></i><br>
     <h3 id="noSearchResults" class="hide">No Results Found</h3>
     
-    <div id="prediction-wrapper" >
-        <div class="prediction-cards" data-prediction-cards-container>
+    <div id="prefute-wrapper" >
+        <div class="prefute-cards" data-prefute-cards-container>
             <!-- <a href="#"  class="card">
-                <i style="font-size:24px" id="predictionLock" data-lock class="fa fa-unlock"></i>
+                <i style="font-size:24px" id="prefuteLock" data-lock class="fa fa-unlock"></i>
                 <img class="releasedIcon" data-released src="/images/released-symbol.png"><br>
-                <div class="header" data-prediction-id>test-prediction-1</div>
+                <div class="header" data-prefute-id>test-prefute-1</div>
                 <div class="name" data-user-name>Name: Neel Narain Gupta</div>
                 <div class="email" data-user-email>Email: neel.msvv@gmail.com</div>
                 <div class="release-date" data-release-date>Release Date: Mon Jun 05 2023, at 15:00</div>
@@ -102,9 +102,9 @@
     </div>
     <template data-template>
     <a href="#"  class="card">
-        <i style="font-size:24px" id="predictionLock" data-lock class="fa"></i>
+        <i style="font-size:24px" id="prefuteLock" data-lock class="fa"></i>
         <img class="releasedIcon" data-released><br>
-        <div class="header" data-prediction-id></div>
+        <div class="header" data-prefute-id></div>
         <div class="name" data-user-name></div>
         <div class="email" data-user-email></div>
         <div class="release-date" data-release-date></div>

@@ -7,40 +7,40 @@ const accountName = document.getElementById("account-name");
 const accountUsername = document.getElementById("account-username");
 const profileRedirect = document.getElementById("profile");
 
-const predictionWrapper = document.querySelector(".prediction-wrapper");
+const prefuteWrapper = document.querySelector(".prefute-wrapper");
 const editingOptionsSec = document.querySelector(".edit-section");
 const lineSeparator = document.querySelector(".line-seperator");
 const loadingIcon = document.getElementById("load");
 const notReleasedFieldset = document.getElementById("notReleased");
-const predictionPasswordContainer = document.getElementById("prediction-password-verification");
+const prefutePasswordContainer = document.getElementById("prefute-password-verification");
 const notReleasedWrapper = document.querySelector(".not-released-wrapper");
-const predictionId_h3 = document.getElementById("prediction-id");
+const prefuteId_h3 = document.getElementById("prefute-id");
 const uploadDateSpan = document.getElementById("upload-date");
 const releaseDateSpan = document.getElementById("release-date");
-const mainPredictionTextarea = document.getElementById("main-prediction");
+const mainprefuteTextarea = document.getElementById("main-prefute");
 
-const predictionCardContainer= document.querySelector("[data-prediction-cards-container]");
-const publicPredictionsCount = document.getElementById("public-predictions-count");
-const privatePredictionsCount = document.getElementById("private-predictions-count");
-const noPredictionsPara = document.getElementById("no-predictions-account");
-const userCardTemplate= document.querySelector("[data-predictions-template]");
-var publicPredictionsCountRef = 0, privatePredictionsCountRef = 0;
-var userUID, userData, predictionData, myUID, predictionId, passwordDB;
+const prefuteCardContainer= document.querySelector("[data-prefute-cards-container]");
+const publicprefutesCount = document.getElementById("public-prefutes-count");
+const privateprefutesCount = document.getElementById("private-prefutes-count");
+const noprefutesPara = document.getElementById("no-prefutes-account");
+const userCardTemplate= document.querySelector("[data-prefutes-template]");
+var publicprefutesCountRef = 0, privateprefutesCountRef = 0;
+var userUID, userData, prefuteData, myUID, prefuteId, passwordDB;
 var isOwner = false;
 
 const URLparameters = new URLSearchParams(window.location.search);
 if(URLparameters.has('user')){
     userUID = URLparameters.get('user');
-    predictionId = URLparameters.get('id');
-    pageTitle.textContent = "Prefute - " + predictionId;
-    predictionId_h3.textContent = predictionId;
+    prefuteId = URLparameters.get('id');
+    pageTitle.textContent = "Prefute - " + prefuteId;
+    prefuteId_h3.textContent = prefuteId;
     displayUserData(userUID);
     retrieveData();
 }else window.location.href = `${prefix}/404${suffix}`
 
-var content = {prefuteID: predictionId}
+var content = {prefuteID: prefuteId}
 const viewProfile = document.getElementById("view-profile");
-const editPredictionBtn = document.getElementById("edit-prediction");
+const editprefuteBtn = document.getElementById("edit-prefute");
 const cancelEditBtn = document.getElementById("cacel-edit");
 if(viewProfile) viewProfile.addEventListener('click', () => window.location.href = `${prefix}/user${suffix}?${userUID}`);
 
@@ -50,9 +50,9 @@ auth.onAuthStateChanged(user => {
     if(auth.currentUser) isOwner = userUID == auth.currentUser.uid;
     if(userUID == myUID){
         viewProfile.remove()
-        editPredictionBtn.classList.toggle("hide", false);
+        editprefuteBtn.classList.toggle("hide", false);
     }else {
-        editPredictionBtn.remove();
+        editprefuteBtn.remove();
         cancelEditBtn.remove();
     }
 }); 
@@ -63,35 +63,35 @@ document.addEventListener('keydown', (click) => {
 })
 
 async function retrieveData(){
-    var publicDataRef  = database.ref(`/users/${userUID}/${predictionId}/public`);
+    var publicDataRef  = database.ref(`/users/${userUID}/${prefuteId}/public`);
     await publicDataRef.once("value", data => {
         var publicData = data.val()
         if(!publicData) window.location.href = `${prefix}/404${suffix}`
         content = Object.assign({}, content, publicData);
     })
-    var privateDataRef  = database.ref(`/users/${userUID}/${predictionId}/private`);
+    var privateDataRef  = database.ref(`/users/${userUID}/${prefuteId}/private`);
     await privateDataRef.once("value", data => {
         var privateData = data.val()
         if(!privateData) window.location.href = `${prefix}/404${suffix}`
         content = Object.assign({}, content, privateData);
     })
-    var prefuteDataRef  = database.ref(`/users/${userUID}/${predictionId}/predictionData`);
+    var prefuteDataRef  = database.ref(`/users/${userUID}/${prefuteId}/prefuteData`);
     await prefuteDataRef.once("value", data => {
         var prefuteData = data.val()
         if(prefuteData) content = Object.assign({}, content, prefuteData);
     }).catch(() => {})
     if(isOwner){
-        var passwordDataRef  = database.ref(`/users/${userUID}/${predictionId}/password`);
+        var passwordDataRef  = database.ref(`/users/${userUID}/${prefuteId}/password`);
         await passwordDataRef.once("value", data => {
             var passwordData = data.val()
             if(passwordData) content = Object.assign({}, content, passwordData);
         })
-    } displayPrediction();
+    } displayprefute();
 }
 
 
-function displayPrediction(){
-    predictionWrapper.classList.remove("hide");
+function displayprefute(){
+    prefuteWrapper.classList.remove("hide");
     loadingIcon.remove();
     lineSeparator.classList.toggle("hide", true);
 
@@ -108,17 +108,17 @@ function displayPrediction(){
             ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
 
         if(!content.isPublic){
-            if(!auth.currentUser) window.location.href = pageBaseURL+`${prefix}/account${suffix}?private-rd-?id=${predictionId}&user=${userUID}`;
+            if(!auth.currentUser) window.location.href = pageBaseURL+`${prefix}/account${suffix}?private-rd-id=${content.prefuteID}&user=${userUID}`;
             if(isOwner){
-                mainPredictionTextarea.textContent = content.prediction;
+                mainprefuteTextarea.textContent = content.prefute;
                 notReleasedFieldset.remove();                    
             }else{
-                mainPredictionTextarea.classList.toggle("hide", true);
-                if(predictionPasswordContainer) predictionPasswordContainer.classList.toggle("hide", false);
+                mainprefuteTextarea.classList.toggle("hide", true);
+                if(prefutePasswordContainer) prefutePasswordContainer.classList.toggle("hide", false);
                 notReleasedWrapper.classList.toggle("hide", true);
             }
         }else{
-            mainPredictionTextarea.textContent = content.prediction;
+            mainprefuteTextarea.textContent = content.prefute;
             notReleasedFieldset.remove();
         }
     }else{
@@ -126,9 +126,9 @@ function displayPrediction(){
             ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
         releaseDateSpan.style.color = "red";
         if(isOwner){
-            mainPredictionTextarea.textContent = content.prediction;
+            mainprefuteTextarea.textContent = content.prefute;
             notReleasedFieldset.remove();
-        }else mainPredictionTextarea.classList.toggle("hide", true);
+        }else mainprefuteTextarea.classList.toggle("hide", true);
     }
     if(isOwner){
         displayEditDetailts();
@@ -152,8 +152,8 @@ function displayUserData(userUID){
         accountName.textContent =  displayName_formated.join(" ").trim();
         accountUsername.textContent = userData.username;
         profileRedirect.href = `${prefix}/user${suffix}?${userUID}`;
-        publicPredictionsCount.textContent = userData.public;
-        privatePredictionsCount.textContent = userData.private;
+        publicprefutesCount.textContent = userData.public;
+        privateprefutesCount.textContent = userData.private;
         content.public = userData.public;
         content.private = userData.private;
     })
@@ -172,33 +172,33 @@ if(passwordReveal) passwordReveal.addEventListener('click', () => {
 
 if(passwordSubmit) passwordSubmit.addEventListener('click', () => {
     database.ref(`/users/${auth.currentUser.uid}/userData/`).update({
-        [predictionId]: password.value
+        [prefuteId]: password.value
     }).then(() => {
-        var prefuteDataRef  = database.ref(`/users/${userUID}/${predictionId}/predictionData`);
+        var prefuteDataRef  = database.ref(`/users/${userUID}/${prefuteId}/prefuteData`);
         prefuteDataRef.once("value", data => {
             var prefuteData = data.val()
             if(prefuteData) content = Object.assign({}, content, prefuteData);
         })
         .then(() => {
-            mainPredictionTextarea.textContent = content.prediction;
+            mainprefuteTextarea.textContent = content.prefute;
             notReleasedFieldset.remove();
-            mainPredictionTextarea.classList.remove("hide");
-            database.ref(`/users/${auth.currentUser.uid}/userData/${predictionId}`).remove();
+            mainprefuteTextarea.classList.remove("hide");
+            database.ref(`/users/${auth.currentUser.uid}/userData/${prefuteId}`).remove();
         })
         .catch(err => {
             if(err.message.includes('permission_denied')) passwordAlert.textContent = "Password is invalid";
             else passwordAlert.textContent = "Error! Please try again.";
             password.focus();
-            database.ref(`/users/${auth.currentUser.uid}/userData/${predictionId}`).remove();
+            database.ref(`/users/${auth.currentUser.uid}/userData/${prefuteId}`).remove();
         })
     })
 })
 
-const predictionVisibility = document.getElementById("prediction-visibility");
+const prefuteVisibility = document.getElementById("prefute-visibility");
 const publicContainer = document.querySelector(".public");
 const privateContainer = document.querySelector(".private");
 
-predictionVisibility.addEventListener('change', () => {
+prefuteVisibility.addEventListener('change', () => {
     publicContainer.classList.toggle("hide");
     privateContainer.classList.toggle("hide");
 })
@@ -207,7 +207,7 @@ predictionVisibility.addEventListener('change', () => {
 const subheading = document.getElementById("subheading");
 const releaseDate_edit = document.getElementById("release-date-edit");
 const releaseTime_edit = document.getElementById("release-time");
-const visibility_edit = document.getElementById("prediction-visibility");
+const visibility_edit = document.getElementById("prefute-visibility");
 const publicTags_edit = document.getElementById("public-tags");
 const password_edit = document.getElementById("password-edit");
 const editElms = document.querySelectorAll(".edit");
@@ -216,7 +216,7 @@ var isEdited = false
 
 const copyLink = document.getElementById("copy-link");
 if(copyLink) copyLink.addEventListener('click', () => {;
-    window.navigator.clipboard.writeText("https://prefute.com/prediction"+window.location.search);
+    window.navigator.clipboard.writeText("https://prefute.com/prefute"+window.location.search);
     copyLink.textContent = "Copied!";
     setTimeout(() => {copyLink.innerHTML = 'Copy <i class="fa-solid fa-copy"></i'}, 3000);
 })
@@ -232,26 +232,26 @@ if(cancelEditBtn) cancelEditBtn.addEventListener('click', () => {
 function cancelEditSec(){
     subheading.textContent = "";
     lineSeparator.classList.toggle("hide", true);
-    predictionWrapper.style.border = "1px solid black";
+    prefuteWrapper.style.border = "1px solid black";
     cancelEditBtn.classList.toggle("hide", true);
-    editPredictionBtn.classList.toggle("hide", false);
+    editprefuteBtn.classList.toggle("hide", false);
     editingOptionsSec.classList.toggle("hide", true);
     editPasswordReveal.classList.toggle("fa-eye", true);
     editPasswordReveal.classList.toggle("fa-eye-slash", false);
     password_edit.type = "password";
 }
 
-if(editPredictionBtn) editPredictionBtn.addEventListener('click', () => {
-    subheading.textContent = "Edit Prediction";
+if(editprefuteBtn) editprefuteBtn.addEventListener('click', () => {
+    subheading.textContent = "Edit prefute";
     lineSeparator.classList.toggle("hide", false);
-    predictionWrapper.style.border = "none";
+    prefuteWrapper.style.border = "none";
     cancelEditBtn.classList.toggle("hide", false);
-    editPredictionBtn.classList.toggle("hide", true);
+    editprefuteBtn.classList.toggle("hide", true);
     editingOptionsSec.classList.toggle("hide", false);
 })
 
 function displayEditDetailts(){
-    predictionPasswordContainer.remove();
+    prefutePasswordContainer.remove();
     const Local_ReleaseDate = new Date(content.releaseTimestamp);
     const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");  
 
@@ -304,10 +304,10 @@ async function uploadData(){
     }
     var releaseDateModified = new Date(releaseDate_edit.value+"T"+releaseTime_edit.value).toGMTString();
 
-    await database.ref(`/users/${userUID}/${predictionId}/password`).set({
+    await database.ref(`/users/${userUID}/${prefuteId}/password`).set({
         password: password_edit.value
     });
-    await database.ref(`/users/${userUID}/${predictionId}/public`).update({
+    await database.ref(`/users/${userUID}/${prefuteId}/public`).update({
         releaseTimestamp: new Date(releaseDateModified).getTime(),
         isPublic: isPublic,
     });
@@ -315,18 +315,18 @@ async function uploadData(){
         public: publicCount,
         private: privateCount
     });
-    if(isPublic) await database.ref(`/users/${userUID}/${predictionId}/public`).update({
+    if(isPublic) await database.ref(`/users/${userUID}/${prefuteId}/public`).update({
         tags: publicTags_edit.value
     });
     console.log("Prefute Edited");
     window.location.reload();
 }
 
-//delete Prediction
-const deletePredictionBtn = document.getElementById("delete-prediction");
-if(deletePredictionBtn) deletePredictionBtn.addEventListener('click', deletePrediction)
+//delete prefute
+const deleteprefuteBtn = document.getElementById("delete-prefute");
+if(deleteprefuteBtn) deleteprefuteBtn.addEventListener('click', deleteprefute)
 
-async function deletePrediction(){
+async function deleteprefute(){
 
     var publicCount = content.public
     var privateCount = content.private
@@ -336,10 +336,10 @@ async function deletePrediction(){
 
     var conformation = prompt("Enter Prefute Id to delete Prefute");
     if(conformation != null){
-        if(conformation == predictionId){
-            await database.ref(`/users/${auth.currentUser.uid}/${predictionId}/public`).remove();
-            await database.ref(`/users/${auth.currentUser.uid}/${predictionId}`).remove();
-            await database.ref(`/data/${predictionId}`).remove();
+        if(conformation == prefuteId){
+            await database.ref(`/users/${auth.currentUser.uid}/${prefuteId}/public`).remove();
+            await database.ref(`/users/${auth.currentUser.uid}/${prefuteId}`).remove();
+            await database.ref(`/data/${prefuteId}`).remove();
 
             await database.ref(`/users/${userUID}/userData`).update({
                 public: publicCount,
@@ -365,5 +365,5 @@ async function deletePrediction(){
 // rules: if ...parent().child(auth.uid).val() == password.val() ....
 //data write
 
-// only read prediction password if auth.uid == user.uid
+// only read prefute password if auth.uid == user.uid
 

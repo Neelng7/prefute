@@ -36,7 +36,7 @@ pre{
     margin: 0;
     padding: 0;
 }
-.prediction-count{
+.prefute-count{
     display: flex;
     gap: 10px;
 }
@@ -77,11 +77,11 @@ pre{
     max-width: 75ch;
     margin: 0 auto;
 }
-.predictions-container{
+.prefute-container{
     margin-inline: calc(10px + 15vw);
     display: grid;
 }
-#no-predictions-account{
+#no-prefute-account{
     position: relative;
     top: 50px;
     font-size: 105%;
@@ -111,6 +111,9 @@ pre{
 .line-seperator.edit-modal{
     width: 80%;
     height: 0.5px;
+}
+#edit-profile-dialog{
+    height: 82%;
 }
 .edit-profile-container{
     text-align: left;
@@ -312,7 +315,7 @@ pre{
         justify-self: center;
         align-self: center;
     }
-    .prediction-cards{
+    .prefute-cards{
         position: absolute;
         left: 5vw;
     }

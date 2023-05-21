@@ -73,17 +73,17 @@
         <img class="account-picture" src="https://prefute.com/images/userProfilePicDefault.png">
         <div class="account-info-conatiner">
             <p id="account-name"></p>
-            <span class="prediction-count">
+            <span class="prefute-count">
                 <p>Prefutes: </p>
-                <p><span id="public-predictions-count"></span> Public</p>
-                <p><span id="private-predictions-count"></span> Private</p>
+                <p><span id="public-prefutes-count"></span> Public</p>
+                <p><span id="private-prefutes-count"></span> Private</p>
             </span>
             <p id="account-username"></p><br>
             <div class="account-info-btns">
                 <button id="signout-btn">Sign Out</button>
                 <button id="edit-profile-btn">Edit Profile</button><br>
             </div>
-            <!-- <a href="new.html"><button id="new-prediction-redirect" class="account-btn-last">New Prediction</button></a> -->
+            <!-- <a href="new.html"><button id="new-prefute-redirect" class="account-btn-last">New prefute</button></a> -->
             <button id="view-favourites" class="account-btn-last">View Favourites</button>
         </div>
         </div><br>
@@ -93,17 +93,17 @@
         <span id="load"><br><br><br>
             <i class="fa-solid fa-circle-notch fa-spin" id="search-load"></i>
         </span>
-        <div class="predictions-container">
-            <p id="no-predictions-account" class="hide">No Prefutes</p><br>
-            <div id="prediction-wrapper">
-                <div class="prediction-cards" data-prediction-cards-container></div>
+        <div class="prefutes-container">
+            <p id="no-prefutes-account" class="hide">No Prefutes</p><br>
+            <div id="prefute-wrapper">
+                <div class="prefute-cards" data-prefute-cards-container></div>
             </div>
-            <template data-predictions-template>
+            <template data-prefutes-template>
                 <a target="_blank" href="#" class="card">
-                    <i style="font-size:24px" id="predictionLock" data-lock class="fa"></i>
+                    <i style="font-size:24px" id="prefuteLock" data-lock class="fa"></i>
                     <img class="releasedIcon" data-released><br>
-                    <b class="header" data-prediction-id></b><br>
-                    <div data-prediction></div>
+                    <b class="header" data-prefute-id></b><br>
+                    <div data-prefute></div>
                     <div data-release-date></div>
                 </a>
             </template>
@@ -202,11 +202,11 @@
             <p id="signin-alert" class="alert"></p>            
         <div>
             <div>
-                <label for="email-signIn">Email: </label>
+                <label for="email-signIn">Email:</label>
                 <input class="inp" type="email" id="email-signIn" placeholder="email">
             </div>
             <div>
-                <label for="password-signIn">Password: </label>
+                <label for="password-signIn">Password:</label></label>
                 <input class="inp" type="password" id="password-signIn" placeholder="password">
                 <i class="fa-solid fa-eye password-reveal" id="reveal_password-signIn"></i>
             </div>
@@ -223,7 +223,7 @@
 <fieldset class="signUp-field box-effect hide">
     <div class="signUp-container">
             <h2>Sign up</h2>
-            <p>Sign up to create an account <br> and make predictions.</p>
+            <p>Sign up to create an account <br> and make prefutes.</p>
             <p id="signup-alert" class="alert"></p>            
         <div class="signUp-info-wrapper">            
             <div><label for="signup-name"><pre>Your Name:             </pre></label>

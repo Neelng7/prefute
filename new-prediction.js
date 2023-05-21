@@ -3,11 +3,11 @@ auth.onAuthStateChanged(user => {
 });
 
 //Toggle public/private visibility
-const predictionVisibility = document.getElementById("prediction-visibility");
+const prefuteVisibility = document.getElementById("prefute-visibility");
 const publicContainer = document.querySelector(".public");
 const privateContainer = document.querySelector(".private");
 
-predictionVisibility.addEventListener('change', () => {
+prefuteVisibility.addEventListener('change', () => {
     publicContainer.classList.toggle("hide");
     privateContainer.classList.toggle("hide");
 })
@@ -31,17 +31,17 @@ new Date("timestamp");
 //new Date().toDateString(); && new Date().toLocaleTimeString(); to get a display date.
 //var localTimezone = "(" + new Date().toString().split("(")[1];
 
-const newPredictionContainer = document.querySelector(".new-prediction-container");
+const newprefuteContainer = document.querySelector(".new-prefute-container");
 const containerAlert = document.getElementById("alert");
-const newPredictionSubmit = document.getElementById("new-prediction-submit");
-const predictionID = document.getElementById("predictionID");
-const prediction = document.getElementById("prediction");
+const newprefuteSubmit = document.getElementById("new-prefute-submit");
+const prefuteID = document.getElementById("prefuteID");
+const prefute = document.getElementById("prefute");
 const releaseDate = document.getElementById("release-date");
 const releaseTime = document.getElementById("release-time");
 const publicTags = document.getElementById("public-tags");
 const password = document.getElementById("password");
 var prohibitedSymbols = [".", "#", "$", "/", "[", "]", "\\", "@", "+", "=", "!"];
-var predictionIDs = [], tomorrow = today, users;
+var prefuteIDs = [], tomorrow = today, users;
 var publicCount = 0, privateCount = 0;
 
 releaseDate.setAttribute("min", today.toISOString().split("T")[0]);
@@ -49,58 +49,58 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 releaseDate.value = tomorrow.toISOString().split("T")[0];
 releaseTime.value = "00:00";
 
-//Get all prediction IDs
+//Get all prefute IDs
 var usersRef  = database.ref('/data/');
 usersRef.once("value",(data) => {
     users = data.val();
-    for (const [idx, value] of Object.entries(users)) predictionIDs.push(idx);
+    for (const [idx, value] of Object.entries(users)) prefuteIDs.push(idx);
 })
 
 //Enter Button
 document.addEventListener('keydown', (click) => {
     if(click.key == "Enter"){
         switch(document.activeElement){
-            case publicTags: newPredictionSubmit.click(); break;
-            case password: newPredictionSubmit.click(); break;
+            case publicTags: newprefuteSubmit.click(); break;
+            case password: newprefuteSubmit.click(); break;
             default: break;
         }
     }
 })
 
-newPredictionSubmit.addEventListener('click', () => {
+newprefuteSubmit.addEventListener('click', () => {
     var stopFn = 0
     prohibitedSymbols.forEach(e => {
-        if(predictionID.value.includes(e)){
+        if(prefuteID.value.includes(e)){
             containerAlert.innerHTML = `Prefute Id is invalid.<br> Prefute Id cannot contain "${e}"`;
-            predictionID.focus();
+            prefuteID.focus();
             stopFn -= 1;
         }else stopFn += 1;
     })
     if(stopFn != prohibitedSymbols.length);
-    else if(predictionID.value.trim() == ""){
+    else if(prefuteID.value.trim() == ""){
         containerAlert.textContent = "Enter a Prefute Id";
-        predictionID.focus();
-    }else if(predictionID.value.includes(" ")){
+        prefuteID.focus();
+    }else if(prefuteID.value.includes(" ")){
         containerAlert.textContent = "Prefute Id cannot contain a space";
-        predictionID.focus(); 
-    }else if(prediction.value.trim() == ""){
-        containerAlert.textContent = "Enter a prediction";
-        prediction.focus();
+        prefuteID.focus(); 
+    }else if(prefute.value.trim() == ""){
+        containerAlert.textContent = "Enter a prefute";
+        prefute.focus();
     }else if(releaseDate.value == ""){
         containerAlert.textContent = "Enter the release date";
         releaseDate.focus();
     }else if(releaseTime.value == ""){
         containerAlert.textContent = "Enter the release time";
         releaseTime.focus();
-    }else if(predictionVisibility.value == "Private" && password.value == ""){
+    }else if(prefuteVisibility.value == "Private" && password.value == ""){
         containerAlert.textContent = "Please enter a password";
         password.focus();
-    }else if(predictionVisibility.value == "Private" && password.value.includes(" ")){
+    }else if(prefuteVisibility.value == "Private" && password.value.includes(" ")){
         containerAlert.textContent = "Password cannot contain a space";
         password.focus();
-    }else if(predictionIDs.includes(predictionID.value.trim())){
+    }else if(prefuteIDs.includes(prefuteID.value.trim())){
         containerAlert.innerHTML = "Prefute Id is already taken.<br> Please enter a unique ID.";
-        predictionID.focus();
+        prefuteID.focus();
     }else uploadData();
 })
 
@@ -114,7 +114,7 @@ async function uploadData(){
         privateCount = userData.private
     });
 
-    var isPublic = predictionVisibility.value == "Public"
+    var isPublic = prefuteVisibility.value == "Public"
     if(isPublic){
         password.value = "";
         publicCount += 1;
@@ -125,22 +125,22 @@ async function uploadData(){
     var uploadDateModified = today.toGMTString();
 
     await database.ref("/data/").update({
-        [predictionID.value]: userUID
+        [prefuteID.value]: userUID
     });
     await database.ref(`/users/${userUID}/userData`).update({
         public: publicCount,
         private: privateCount
     });
-    await database.ref(`/users/${userUID}/${predictionID.value}/private`).set({
+    await database.ref(`/users/${userUID}/${prefuteID.value}/private`).set({
         uploadDate: new Date(uploadDateModified).getTime()
     });
-    await database.ref(`/users/${userUID}/${predictionID.value}/password`).set({
+    await database.ref(`/users/${userUID}/${prefuteID.value}/password`).set({
         password: password.value
     });
-    await database.ref(`/users/${userUID}/${predictionID.value}/predictionData`).set({
-        prediction: prediction.value
+    await database.ref(`/users/${userUID}/${prefuteID.value}/prefuteData`).set({
+        prefute: prefute.value
     });
-    await database.ref(`/users/${userUID}/${predictionID.value}/public`).set({
+    await database.ref(`/users/${userUID}/${prefuteID.value}/public`).set({
         releaseTimestamp: new Date(releaseDateModified).getTime(),
         tags: publicTags.value, 
         isPublic: isPublic

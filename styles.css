@@ -198,7 +198,7 @@ main{
     font-size: 110%;
 }
 
-/* Prediction View */
+/* prefute View */
 .edit-section-field{
     margin: 0 auto;
     width: 30vw;
@@ -239,7 +239,7 @@ svg.h-6.w-6{
     position: relative;
     top: 2px;
 }
-/* Prediction View end */
+/* prefute View end */
 
 .password-reveal{
     cursor: pointer;
@@ -290,8 +290,8 @@ a, a:link, a:active, a:visited{
     display: none !important;
 }
 
-/* Prediction cards */
-.prediction-cards{
+/* prefute cards */
+.prefute-cards{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-gap: 5em;
@@ -315,7 +315,7 @@ a, a:link, a:active, a:visited{
 .card > *{
     margin-block: 10px;
 }
-[data-prediction]{
+[data-prefute]{
     --max-lines: 2;
     margin-inline: 10px;
     display: -webkit-box;
@@ -323,7 +323,7 @@ a, a:link, a:active, a:visited{
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-lines);
 }
-.prediction-wrapper{
+.prefute-wrapper{
     width: fit-content;
     height: fit-content;
     margin: 0 auto;
@@ -342,7 +342,7 @@ a, a:link, a:active, a:visited{
     margin: 0;
     margin-left: 10px;
 }
-/* Predictions cards end */
+/* prefutes cards end */
 
 /* Dialogs */
 .dialog{
@@ -403,7 +403,7 @@ dialog button{
     margin: 0 auto;
     text-align: left;
 }
-#prediction{
+#prefute{
     margin-top: 3px;
 }
 pre{

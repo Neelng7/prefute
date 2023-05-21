@@ -1,15 +1,15 @@
 const userCardTemplate= document.querySelector("[data-template]");
-const predictionCardContainer= document.querySelector("[data-prediction-cards-container]");
+const prefuteCardContainer= document.querySelector("[data-prefute-cards-container]");
 const searchLoad = document.getElementById("search-load");
-const noPredictionFound = document.querySelector(".no-prediction-found");
-var dbData, dbPrediction, dbUser, count = 0;
+const noprefuteFound = document.querySelector(".no-prefute-found");
+var dbData, dbprefute, dbUser, count = 0;
 var filterOnlyArray = ["released", "unreleased", "public", "private"];
 getData();
 
 function getData(){
     searchLoad.classList.toggle("hide", false);
-    noPredictionFound.classList.toggle("hide", true);
-    predictionCardContainer.innerHTML = "";
+    noprefuteFound.classList.toggle("hide", true);
+    prefuteCardContainer.innerHTML = "";
     var dbDataRef  = database.ref('/data/');
     dbDataRef.once("value",(data) => {
         dbData = data.val();
@@ -24,50 +24,50 @@ function getData(){
                 var dbUserRef  = database.ref(`/users/${value}/userData/`);
                 dbUserRef.once("value", data => {
                     dbUser = data.val();
-                    if(dbUser !== null) displayPredictions(idx, value, dbUser);
+                    if(dbUser !== null) displayprefutes(idx, value, dbUser);
                 })
             }
         })
     });
 }
     
-async function displayPredictions(id, uid, dbUser){
+async function displayprefutes(id, uid, dbUser){
 
-    var predictionCardData = {prefuteId: id, name: dbUser.displayName, username: dbUser.username}
+    var prefuteCardData = {prefuteId: id, name: dbUser.displayName, username: dbUser.username}
 
     var publicDataRef  = database.ref(`/users/${uid}/${id}/public`);
     await publicDataRef.once("value",(data) => {
         var publicData = data.val();
-        if(publicData) predictionCardData = Object.assign({}, predictionCardData, publicData);
+        if(publicData) prefuteCardData = Object.assign({}, prefuteCardData, publicData);
     });
 
     searchLoad.classList.toggle("hide", true);
 
     const card = userCardTemplate.content.cloneNode(true).children[0];
-    const predictionIdCard = card.querySelector("[data-prediction-id]");
+    const prefuteIdCard = card.querySelector("[data-prefute-id]");
     const UserNameCard = card.querySelector("[data-user-name]");
     const UserUsernameCard = card.querySelector("[data-user-email]");
     const releaseDateCard = card.querySelector("[data-release-date]");
-    const predictionLock = card.querySelector("[data-lock]");
+    const prefuteLock = card.querySelector("[data-lock]");
     const releasedIcon = card.querySelector("[data-released]");
     const publicTags = card.querySelector("[data-tags]");
 
-    const Local_ReleaseDate = new Date(predictionCardData.releaseTimestamp);
+    const Local_ReleaseDate = new Date(prefuteCardData.releaseTimestamp);
     const Local_ReleaseTime = Local_ReleaseDate.toTimeString().split(":");
     releaseDateCard.textContent = `Release Date: ${Local_ReleaseDate.toDateString()}, at ${Local_ReleaseTime[0]}:${Local_ReleaseTime[1]}`;
 
-    UserNameCard.textContent = "Name: " + predictionCardData.name;
-    UserUsernameCard.textContent = "Username: " + predictionCardData.username;
-    predictionIdCard.textContent = predictionCardData.prefuteId;
+    UserNameCard.textContent = "Name: " + prefuteCardData.name;
+    UserUsernameCard.textContent = "Username: " + prefuteCardData.username;
+    prefuteIdCard.textContent = prefuteCardData.prefuteId;
 
-    if(!predictionCardData.isPublic){
-        predictionLock.classList.add("fa-lock");
-        predictionLock.title = "Prefute is Private";
+    if(!prefuteCardData.isPublic){
+        prefuteLock.classList.add("fa-lock");
+        prefuteLock.title = "Prefute is Private";
         if(!filterOnlyArray.includes("private")) return;
     }else{
-        predictionLock.classList.add("fa-unlock");
-        predictionLock.title = "Prefute is Public";
-        publicTags.textContent = predictionCardData.tags;
+        prefuteLock.classList.add("fa-unlock");
+        prefuteLock.title = "Prefute is Public";
+        publicTags.textContent = prefuteCardData.tags;
         if(!filterOnlyArray.includes("public")) return;
     }
     if(Local_ReleaseDate < new Date()){
@@ -80,8 +80,8 @@ async function displayPredictions(id, uid, dbUser){
         if(!filterOnlyArray.includes("unreleased")) return;
     }
 
-    card.href = `${prefix}/prediction${suffix}?id=${id}&user=${uid}`;
-    predictionCardContainer.append(card);
+    card.href = `${prefix}/prefute${suffix}?id=${id}&user=${uid}`;
+    prefuteCardContainer.append(card);
     count += 1;
 }
 
@@ -125,7 +125,7 @@ searchInp.addEventListener("input", () => {
     const cardEls = document.querySelectorAll(".card");
     cardEls.forEach((e) => {
 
-    const predictionid = e.querySelector(".header").textContent;
+    const prefuteid = e.querySelector(".header").textContent;
     const name = e.querySelector(".name").textContent;
     const email = e.querySelector(".email").textContent;
     const tags = e.querySelector(".search-tags").textContent;
@@ -133,7 +133,7 @@ searchInp.addEventListener("input", () => {
     const searchValueSplit = searchValue.split(" ");
     
     for(let n=0; n<searchValueSplit.length; n++){
-        if(predictionid.includes(searchValueSplit[n]) || name.includes(searchValueSplit[n])){
+        if(prefuteid.includes(searchValueSplit[n]) || name.includes(searchValueSplit[n])){
             e.classList.remove("hide")
         }else if(email.includes(searchValueSplit[n]) || tags.includes(searchValueSplit[n])){
             e.classList.remove("hide")
@@ -150,11 +150,11 @@ searchInp.addEventListener("input", () => {
 function generateSearchReults(resultsCount){
     searchResults.textContent = resultsCount;   
     searchResultsPElm.classList.remove("hide");
-    noPredictionFound.classList.add("hide");
+    noprefuteFound.classList.add("hide");
 
     if(resultsCount == 0){
         searchResultsPElm.classList.add("hide");
-        noPredictionFound.classList.toggle("hide", false);
+        noprefuteFound.classList.toggle("hide", false);
     }
 }
 
