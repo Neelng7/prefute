@@ -86,7 +86,7 @@ async function displayprefutes(id, uid, dbUser){
     // if(noResults) noResults.remove();
 
     var thisYear = new Date("2000-01-01")
-    thisYear.setFullYear(new Date().getFullYear())
+    thisYear.setFullYear(new Date().getFullYear() - 1)
     if(Local_UploadDate < thisYear) return;
     if(noResults) noResults.remove();
 
