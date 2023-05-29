@@ -54,7 +54,7 @@ function retriveData(){
     dataRef.once("value", data => {
         dbData = data.val();
         for (const [id, value] of Object.entries(dbData)){
-            if(value == userUID && !value.includes("UN:")) displayPrefutes(id)
+            if(value == userUID && !id.includes("UN:")) displayPrefutes(id)
         }
         document.getElementById("load").remove();
         document.querySelector("template").remove();
