@@ -51,8 +51,6 @@ reportAnchor.forEach(btn => btn.addEventListener('click', () => {
     else reportDialog.showModal()
 }));
 
-reportDialog.showModal();
-
 const cancelReportModal = document.getElementById("cancel-report-modal");
 const exitReportModal = document.getElementById("exit-report-modal");
 const reportSummary = document.getElementById("report-summary");
