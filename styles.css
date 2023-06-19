@@ -93,11 +93,15 @@ header button{
     margin-right: -5vw;
     color: rgb(215,215,215);
 }
-.page-anchors a{
+.reportAnchor{
+    font-size: 1rem;
+    color: rgb(215,215,215);
+}
+.page-anchors a, .reportAnchor{
     transition: 100ms;
     margin-inline: calc(5px + 0.5vw);
 }
-.page-anchors > a:hover {
+.page-anchors > a:hover , .reportAnchor:hover{
     color: var(--background-white);
 }
 .selected{
@@ -274,6 +278,19 @@ textarea{
 #search-load{
     position: relative;
     font-size: 120%;
+}
+.line-seperator{
+    position: relative;
+    height: 1px;
+    top: -5px;
+    background: var(--text-color);
+    width: 80vw;
+    max-width: 75ch;
+    margin: 0 auto;
+}
+.line-seperator.edit-modal{
+    width: 80%;
+    height: 0.5px;
 }
 button, select, .pointer-label{
     cursor: pointer;

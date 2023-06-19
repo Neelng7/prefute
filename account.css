@@ -68,15 +68,6 @@ pre{
 #account-name{
     font-size: 125%;
 }
-.line-seperator{
-    position: relative;
-    height: 1px;
-    top: -5px;
-    background: var(--text-color);
-    width: 80vw;
-    max-width: 75ch;
-    margin: 0 auto;
-}
 .prefute-container{
     margin-inline: calc(10px + 15vw);
     display: grid;
@@ -107,10 +98,6 @@ pre{
 #verify-email::after{
     content: "*";
     color: red;
-}
-.line-seperator.edit-modal{
-    width: 80%;
-    height: 0.5px;
 }
 #edit-profile-dialog{
     height: 82%;
