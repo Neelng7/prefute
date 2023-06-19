@@ -385,6 +385,30 @@ dialog button{
 }
 /* Dialogs End */
 
+/* Report Dialog */
+.report-container{
+    width: fit-content;
+    margin: 0 auto;
+    text-align: left;
+}
+.report-container *{
+    margin-block: 10px;
+}
+.report.btn{
+    position: relative;
+    left: 0;
+    top: 20px;
+}
+#report-screenshot{
+    display: none;
+}
+label.report{
+    text-decoration: underline;
+    font-size: 90%;
+    cursor: pointer;
+}
+/* report Dialog End */
+
 .text-left-align{
     text-align: left;
     margin-left: 20px

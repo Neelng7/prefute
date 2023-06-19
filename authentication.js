@@ -15,7 +15,7 @@ const phoneNoSignUp = document.getElementById("phone");
 const passwordReveal = document.querySelectorAll(".password-reveal");
 const prefuteCardContainer= document.querySelector("[data-prefute-cards-container]");
 const userCardTemplate= document.querySelector("[data-prefutes-template]");
-var storage = firebase.storage().ref(), redirect = "";
+var redirect = "";
 
 auth.onAuthStateChanged(user => {
     if (user) {
@@ -25,7 +25,11 @@ auth.onAuthStateChanged(user => {
         else if(redirect.includes("profile-rd")){
             if(redirect.split("-")[2] != user.uid) window.open(`${prefix}/user${suffix}?${redirect.split("-")[2]}`);
             window.location.href = pageBaseURL+prefix+"/account"+suffix;
-        }else if(window.location.search.includes("private-rd")) window.location.href = `${pageBaseURL}/prefute${suffix}?${redirect.split("-")[2]}`;
+        }
+        else if(window.location.search.includes("private-rd")){
+            window.location.href = `${pageBaseURL}/prefute${suffix}?${redirect.split("-")[2]}`;
+        }
+        else if(redirect.includes("report-rd")) window.location.href = pageBaseURL + "?report"
         else {
             hideAllElements(accountDetailsContainer, "My Account");
             diplayAccountDetails(user);
@@ -44,6 +48,10 @@ auth.onAuthStateChanged(user => {
             redirect = window.location.search;
         }else if(window.location.search.includes("private-rd")){
             signinAlert.textContent = "Sign In to view a private prefute";
+            signinMssg.classList.add("hide");
+            redirect = window.location.search;
+        }else if(window.location.search.includes("report-rd")){
+            signinAlert.textContent = "Sign In to report a problem";
             signinMssg.classList.add("hide");
             redirect = window.location.search;
         }

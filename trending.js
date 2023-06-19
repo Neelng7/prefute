@@ -1,7 +1,7 @@
 const userCardTemplate= document.querySelector("[data-template]");
 const prefuteCardContainer= document.querySelector("[data-prefute-cards-container]");
 const searchLoad = document.getElementById("search-load");
-const userName = document.getElementById("user-name");
+const welcomeMsgg = document.getElementById("welcome-mssg");
 const noResults =  document.querySelector(".no-prefute-found")
 // const noprefuteFound = document.querySelector(".no-prefute-found");
 var dbData, dbprefute, dbUser, count = 0;
@@ -14,7 +14,10 @@ today.setDate(today.getDate()-1);
 //Welcome user name
 auth.onAuthStateChanged(user => {
     if (user) {
-        userName.textContent = auth.currentUser.displayName;
+        welcomeMsgg.textContent =  "Welcome " + auth.currentUser.displayName;
+        if(window.location.search.includes("report")){
+            reportDialog.showModal();
+        }
     }
 });
 
