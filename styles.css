@@ -135,6 +135,11 @@ ul{
     background-color: var(--dropdown);
     margin: 0;
 }
+#dropdown-menu > ul > li.reportAnchor{
+    margin-inline: 0;
+    color: var(--background-white);
+    margin-right: 30px;
+}
 li{
     margin: 0;
     margin-right: 30px;
@@ -149,12 +154,16 @@ li:hover{
 }
 
 @media only screen and (max-width: 790px){
-    #portrait{ display:inline !important; }
+    #portrait{ display: inline !important; }
     header#landscape{ display: none; }
     .info{ display: none;}
     .fav-btn-wrapper{ 
         display: none !important;
         color:red 
+    }
+    .report-container *{
+        margin: 20px;
+        width: 60vw;
     }
 }
 /* Header End */
