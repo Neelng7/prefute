@@ -111,6 +111,26 @@ header button{
 #welcome-mssg{
     font-size: 120%;
 }
+.wifi-disconnect{
+    background-color: rgb(255, 101, 101); 
+    height: 2.5em; 
+    width: 100vw; 
+    margin: 0;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    text-align: left;
+    color: var(--background-white);
+}
+.wifi-disconnect > span{
+    margin-left: 1em;
+    position: relative;
+    top: 0.5em;
+}
+main.wifi-down{
+    top: 2em !important;
+}
+
 
 /* Portrait */
 #dropdown-menu{
@@ -165,6 +185,7 @@ li:hover{
         margin: 20px;
         width: 60vw;
     }
+    .wifi-sec-mssg{ display: none }
 }
 /* Header End */
 

@@ -678,7 +678,7 @@ function populateFavourites(){
             const favcard = favouritesCardTemplate.content.cloneNode(true).children[0];
             const favUserPfp = favcard.querySelector("[data-user-pfp]");
             const favUserName = favcard.querySelector("[data-user-name]");
-            const faveUserEmail = favcard.querySelector("[data-email]");
+            const faveUserUsername = favcard.querySelector("[data-username]");
             const faveUser_viewProfile = favcard.querySelector("[data-view-profile]");
             const removeFromFavorites = favcard.querySelector("[data-remove-profile]");
             favcard.id = idx
@@ -703,7 +703,7 @@ function populateFavourites(){
                     [idx]: favouritesData.displayName
                 });
                 favUserPfp.src = favouritesData.photoURL;
-                faveUserEmail.textContent = favouritesData.email;
+                faveUserUsername.textContent = favouritesData.username;
                 favUserName.textContent = favouritesData.displayName;
             }).then(e => {
                 favouritesCardContainer.append(favcard);

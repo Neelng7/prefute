@@ -64,6 +64,14 @@
             </ul>
         </div>
 
+        <div class="wifi-disconnect hide">
+            <span>
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>No internet connection! 
+                <span class="wifi-sec-mssg">Please check your Wi-Fi or mobile network connection and try again.</span></span> 
+            </span>
+        </div>
+
 <main>
     <h1>Prefute</h1>
 
@@ -175,6 +183,8 @@
 
     <label for="report-screenshot" class="report">Add a Screenshot (optional)</label>
     <input type="file" id="report-screenshot" accept="image/jpeg, image/png, image/jpg">
+    <i class="fa-solid fa-circle-notch fa-spin hide" id="report-load"></i><br>
+    <span id="screenshot-name"></span>
     
     <div class="report-btn-wrapper">
         <button id="cancel-report-modal" class="btn report">Cancel</button>

@@ -56,8 +56,10 @@ const exitReportModal = document.getElementById("exit-report-modal");
 const reportSummary = document.getElementById("report-summary");
 const reportDetails = document.getElementById("report-details");
 const reportScreenshot = document.getElementById("report-screenshot");
+const screenshotName = document.getElementById('screenshot-name');
 const submitReport = document.getElementById("submit-report");
 const alertReport = document.getElementById("report-alert");
+const reportLoad = document.getElementById('report-load');
 
 cancelReportModal.addEventListener('click', cancelReport);
 exitReportModal.addEventListener('click', cancelReport);
@@ -78,11 +80,11 @@ submitReport.addEventListener('click', () => {
         var count = data.val() + 1;
         var file = reportScreenshot.files[0];
 
-        if(reportSummary.value.trim().length < 5){
+        if(reportSummary.value.trim().length < 2){
             alertReport.innerHTML = "Enter a valid report summary<br>"
             reportSummary.focus();
         }
-        else if(reportDetails.value.trim().length < 10){
+        else if(reportDetails.value.trim().length < 5){
             alertReport.innerHTML = "Enter valid details<br>"
             reportDetails.focus();
         }
@@ -92,6 +94,23 @@ submitReport.addEventListener('click', () => {
         }
         else reportProblem(count);
     })
+})
+
+reportScreenshot.addEventListener('change', () => {
+
+    var file = reportScreenshot.files[0];
+    reportLoad.classList.toggle('hide', false);
+
+    if(file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png"){
+
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            screenshotName.textContent = file.name;
+            reportLoad.classList.toggle('hide', true);
+        });
+        reader.readAsDataURL(reportScreenshot.files[0]);
+        
+    }else  alertReport.innerHTML = "File Type is inavlid \nUploaded file is not an image";
 })
 
 async function reportProblem(count){
@@ -118,6 +137,7 @@ async function reportProblem(count){
         imageURL: urlRef,
         summary: reportSummary.value,
         details: reportDetails.value,    
+        date: new Date().toGMTString()
     })
 
     await database.ref('/reports/').update({
@@ -128,6 +148,17 @@ async function reportProblem(count){
     cancelReport();
 }
 
+//Wifi disconnected
+const wifiDisconnect = document.querySelector('.wifi-disconnect');
+
+window.addEventListener("offline", function() {
+    wifiDisconnect.classList.toggle('hide', false);
+    main.classList.toggle('wifi-down', true);
+})
+window.addEventListener("online", function() {
+    wifiDisconnect.classList.toggle('hide', true);
+    main.classList.toggle('wifi-down', false);
+})
 
 //Page Shortcuts
 document.addEventListener('keydown', keydown => {
