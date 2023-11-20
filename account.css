@@ -149,6 +149,9 @@ pre{
     /* border-bottom: none; */
     padding-top: 2px;
 }
+#save-changes-load{
+    color: var(--background-white);
+}
 /* Edit Profile End */
 
 /* Sign In/ Up */

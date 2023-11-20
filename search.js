@@ -46,7 +46,7 @@ async function displayprefutes(id, uid, dbUser){
     const card = userCardTemplate.content.cloneNode(true).children[0];
     const prefuteIdCard = card.querySelector("[data-prefute-id]");
     const UserNameCard = card.querySelector("[data-user-name]");
-    const UserUsernameCard = card.querySelector("[data-user-email]");
+    const UserUsernameCard = card.querySelector("[data-user-username]");
     const releaseDateCard = card.querySelector("[data-release-date]");
     const prefuteLock = card.querySelector("[data-lock]");
     const releasedIcon = card.querySelector("[data-released]");
@@ -125,17 +125,19 @@ searchInp.addEventListener("input", () => {
     const cardEls = document.querySelectorAll(".card");
     cardEls.forEach((e) => {
 
-    const prefuteid = e.querySelector(".header").textContent;
-    const name = e.querySelector(".name").textContent;
-    const email = e.querySelector(".email").textContent;
-    const tags = e.querySelector(".search-tags").textContent;
-    
+    const prefuteid = e.querySelector(".header").textContent.toLowerCase();
+    const name = e.querySelector(".name").textContent.toLowerCase();
+    const username = e.querySelector(".username").textContent.toLowerCase();
+    const tags = e.querySelector(".search-tags").textContent.toLowerCase();
+
     const searchValueSplit = searchValue.split(" ");
     
     for(let n=0; n<searchValueSplit.length; n++){
-        if(prefuteid.includes(searchValueSplit[n]) || name.includes(searchValueSplit[n])){
+        var searchVal = searchValueSplit[n].toLowerCase()
+
+        if(prefuteid.includes(searchVal) || name.includes(searchVal)){
             e.classList.remove("hide")
-        }else if(email.includes(searchValueSplit[n]) || tags.includes(searchValueSplit[n])){
+        }else if(username.includes(searchVal) || tags.includes(searchVal)){
             e.classList.remove("hide")
         }else{
             e.classList.add("hide")

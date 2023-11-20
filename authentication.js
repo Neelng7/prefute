@@ -145,8 +145,8 @@ function signup_verify(){
         }else if(validateEmail(emailSignUp.value.trim()) == ""){
             signupAlert.textContent = "Email is badly formatted";
             emailSignUp.focus();
-        }else if(passwordSignUp.value.trim() == ""){
-            signupAlert.textContent = "Please enter a password";
+        }else if(passwordSignUp.value.trim().length < 6){
+            signupAlert.textContent = "The password must be longer than 6 characters";
             passwordSignUp.focus();
         }else if(confirmPassword.value.trim() == ""){
             signupAlert.textContent = "Please enter your password again";
@@ -345,7 +345,7 @@ forgotPasswordBtn.addEventListener('click', () => hideAllElements(forgotPassword
 sendForgotPasswordEmail.addEventListener('click', () => {
     auth.sendPasswordResetEmail(forgotPasswordInp.value, actionCodeSettings).then(() => {
         console.log("Email Sent.")
-        forgotPasswordAlert.innerHTML = "An email has been sent to you with<br> instrustions on how to reset your password.";
+        forgotPasswordAlert.innerHTML = "An email has been sent to you with<br> instrustions on how to reset your password.<br>Check you spam folder as well.";
     }).catch(error => {
         if(error.code == "auth/invalid-email") forgotPasswordAlert.innerHTML = "Please enter a valid email.";
         else if(error.code == "auth/user-not-found") forgotPasswordAlert.innerHTML = "Error! User not found.";
@@ -446,12 +446,13 @@ function changeUserPassword(){
 
 saveNewPassword.addEventListener('click', () => {
     var user = auth.currentUser;
-    if(resetPasswordNew.value == resetPasswordNewConfirm.value){
+    if(resetPasswordNew.value.trim().length < 6) changePasswordAlert.innerHTML = "The password must be longer than 6 characters <br><br>";
+    else if(resetPasswordNew.value == resetPasswordNewConfirm.value){
         user.updatePassword(resetPasswordNew.value).then(() => {
             alert("Password has been changed.");
             window.location.reload();
         })
-    }else changePasswordAlert.textContent = "Passwords do not match";
+    }else changePasswordAlert.innerHTML = "Passwords do not match <br><br>";
 })
 
 //email verification
@@ -476,7 +477,7 @@ verifyEmail.addEventListener('click', () => {
     if(confirm("Verify Email?")){
         var user = auth.currentUser
         auth.currentUser.sendEmailVerification(actionCodeSettings).then(() => {
-            alert(`An email has been sent to ${user.email}`);
+            alert(`An email has been sent to ${user.email}\nCheck your spam folder as well.`);
         }).catch(error => console.error("error sending, link: "+error));
     } 
 });
@@ -538,7 +539,10 @@ deleteProfilePic.addEventListener('click',() =>{
     if(!auth.currentUser.photoURL.includes("firebasestorage")){
         alert("No profile picture found.\nFile not deleted.");
     }else if(confirm("Delete Image?")){
+        saveAccountChanges.setAttribute('disabled', '')
+        saveAccountChanges.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="save-changes-load"></i>'
         var user = auth.currentUser;
+
         var imageRef = storage.child('profile-picture/' + user.uid);
         imageRef.delete().then(async function(){
             console.log("Image Deleted");
@@ -549,11 +553,20 @@ deleteProfilePic.addEventListener('click',() =>{
             reader.onloadend = () => {
                 user.updateProfile({
                     photoURL: reader.result
-                }).then(() => { 
-                    alert("Image Deleted");
-                    window.location.reload()});
+                }).then(() => {
+                    saveAccountChanges.innerHTML = 'Save Changes';
+                    database.ref(`/users/${user.uid}/userData/`).update({
+                        photoURL: reader.result
+                    }).then(() => {
+                        alert("Image Deleted");
+                        window.location.reload()
+                    });
+                });
             }
-        }).catch(error => {if(error.code == 404) alert("No file deleted")});
+        }).catch(error => {
+            if(error.code == 404) alert("No profile picture found.\nFile not deleted.")
+            else alert("Error! File not deleted.\nPlease try again later.")
+        });
     }
 })
 
@@ -588,6 +601,7 @@ saveAccountChanges.addEventListener('click', async () => {
 
     if(accountEditChanges.dob){
         saveAccountChanges.setAttribute("disabled", '');
+        saveAccountChanges.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="save-changes-load"></i>'
 
         await database.ref(`/users/${user.uid}/userData`).update({
             birthDate: accountEditChanges.dob
@@ -598,6 +612,7 @@ saveAccountChanges.addEventListener('click', async () => {
 
     if(accountEditChanges.name){ 
         saveAccountChanges.setAttribute("disabled", '');
+        saveAccountChanges.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="save-changes-load"></i>'
 
         if(user.photoURL.includes("firebasestorage") || accountEditChanges.file){
             await user.updateProfile({displayName: accountEditChanges.name})
@@ -637,6 +652,7 @@ function uploadProfilePic_Storage(){
     const metadata = { contentType: file.type };
 
     saveAccountChanges.setAttribute("disabled", '');
+    saveAccountChanges.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="save-changes-load"></i>'
 
     storage.child(fileName).put(file, metadata)
         .then(snapshot => {
