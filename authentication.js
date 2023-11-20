@@ -768,6 +768,3 @@ function hideAllElements(exemption, title){
 }
 
 
-//Errors
-//".", "#", "$", "/", "[", or "]" in keys not allowed
-
