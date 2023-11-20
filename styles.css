@@ -454,6 +454,9 @@ label.report{
     font-size: 90%;
     cursor: pointer;
 }
+#report-load{
+    color: var(--background-white);
+}
 /* report Dialog End */
 
 .text-left-align{

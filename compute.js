@@ -68,14 +68,18 @@ function cancelReport(){
     reportSummary.value = "";
     reportDetails.value = "";
     reportScreenshot.value = null;
-    alertReport.textContent = ""
+    alertReport.textContent = "";
+    screenshotName.textContent = "";
     submitReport.removeAttribute("disabled");
     reportDialog.close();
 }
 
 submitReport.addEventListener('click', () => {
     //get reports count
-    var countRef = database.ref('/reports/reportCount')
+    var countRef = database.ref('/reports/reportCount');
+    submitReport.setAttribute('disabled', '')
+    submitReport.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="report-load"></i>'
+
     countRef.once("value", data => {
         var count = data.val() + 1;
         var file = reportScreenshot.files[0];
