@@ -78,7 +78,6 @@ submitReport.addEventListener('click', () => {
     //get reports count
     var countRef = database.ref('/reports/reportCount');
     submitReport.setAttribute('disabled', '')
-    submitReport.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="report-load"></i>'
 
     countRef.once("value", data => {
         var count = data.val() + 1;
@@ -87,14 +86,17 @@ submitReport.addEventListener('click', () => {
         if(reportSummary.value.trim().length < 2){
             alertReport.innerHTML = "Enter a valid report summary<br>"
             reportSummary.focus();
+            submitReport.removeAttribute('disabled')
         }
         else if(reportDetails.value.trim().length < 5){
             alertReport.innerHTML = "Enter valid details<br>"
             reportDetails.focus();
+            submitReport.removeAttribute('disabled')
         }
         else if(file && !(file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/png")){
             alertReport.innerHTML = "File type is invalid<br>Uploaded file is not an image."
             reportScreenshot.value = "";
+            submitReport.removeAttribute('disabled')
         }
         else reportProblem(count);
     })
@@ -118,12 +120,14 @@ reportScreenshot.addEventListener('change', () => {
 })
 
 async function reportProblem(count){
+
     var user = auth.currentUser;
     var file = reportScreenshot.files[0];
     let urlRef = null;
 
     submitReport.setAttribute("disabled", '');
     alertReport.innerHTML = ""
+    submitReport.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" id="report-load"></i>'
 
     if(file){
         const fileName = `/reports/report${count}_${new Date()}_${user.uid}`
@@ -148,6 +152,7 @@ async function reportProblem(count){
        reportCount: count 
     })
 
+    submitReport.innerHTML = 'Report'
     alert("Problem Reported");
     cancelReport();
 }

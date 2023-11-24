@@ -186,6 +186,9 @@ li:hover{
         width: 60vw;
     }
     .wifi-sec-mssg{ display: none }
+    .about-content{
+        max-width: 75vw !important;
+    }
 }
 /* Header End */
 
